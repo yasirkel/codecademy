@@ -2,6 +2,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.Db;
+import javafx.application.Application;
 
 /**
  * CodeCademy
@@ -30,6 +31,9 @@ public class CodeCademy {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // start javafx vanuit class
+        Application.launch(GUI.class);
 
     }
 }
