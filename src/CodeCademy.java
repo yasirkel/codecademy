@@ -17,7 +17,7 @@ public class CodeCademy {
         Db db = new Db();
         db.connect();
 
-        // sla het resultaat van de query op in de resultset
+        // sla het resultaat van de query op in de resultset.
         ResultSet resultSet = db.query("SELECT * FROM Users WHERE firstname = 'Yasir'");
 
         try {
