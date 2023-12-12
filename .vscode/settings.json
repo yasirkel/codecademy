@@ -14,6 +14,14 @@
         "c:\\Program Files\\Eclipse Adoptium\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
         "c:\\Program Files\\Eclipse Adoptium\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
         "c:\\Program Files\\Eclipse Adoptium\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
-        "c:\\Program Files\\Eclipse Adoptium\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
+        "c:\\Program Files\\Eclipse Adoptium\\openjfx-11.0.2_windows-x64_bin-sdk\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar"
     ]
 }
