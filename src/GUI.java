@@ -21,16 +21,27 @@ public class GUI extends Application {
     public void start(Stage stage) {
         cursistController = new CursistController();
 
-        TextField naamField = new TextField("Naam");
-        TextField emailField = new TextField("Email");
-        TextField birthDateField = new TextField("Birthdate");
+        TextField naamField = new TextField();
+        naamField.setPromptText("Naam");
+
+        TextField emailField = new TextField();
+        emailField.setPromptText("Email");
+
+        TextField birthDateField = new TextField();
+        birthDateField.setPromptText("Birthdate");
 
         ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
-        genderChoiceBox.getItems().addAll("Man", "Vrouw"); // Voeg hier andere geslachtskeuzes toe indien nodig
+        genderChoiceBox.getItems().addAll("Selecteer geslacht", "Man", "Vrouw");
+        genderChoiceBox.getSelectionModel().selectFirst();
 
-        TextField addressField = new TextField("Address");
-        TextField residenceField = new TextField("Residence");
-        TextField countryField = new TextField("Country");
+        TextField addressField = new TextField();
+        addressField.setPromptText("Address");
+
+        TextField residenceField = new TextField();
+        residenceField.setPromptText("Residence");
+
+        TextField countryField = new TextField();
+        countryField.setPromptText("Country");
 
         Button addButton = new Button("Voeg Cursist Toe");
 
