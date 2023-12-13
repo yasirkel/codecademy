@@ -18,7 +18,7 @@ public class DatabaseManager {
 
     public void saveCursist(Cursist cursist) {
         try {
-            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Gender, Address, Residence, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Sex, Address, Residence, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, cursist.getEmailAddress());
                 statement.setString(2, cursist.getName());
