@@ -1,11 +1,18 @@
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
 import javafx.application.Application;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -16,6 +23,7 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
     private CursistController cursistController;
+    private DatabaseManager db = new DatabaseManager();
 
     @Override
     public void start(Stage stage) {
@@ -82,13 +90,29 @@ public class GUI extends Application {
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
 
+        readButton.setOnAction(e -> {
+            ArrayList<String> cursistNames = db.getAllCursist();
+
+            ListView<String> list = new ListView<>();
+            ObservableList<String> items = FXCollections.observableArrayList(cursistNames);
+
+            list.setItems(items);
+
+            Scene cursistsScene = new Scene(list);
+            stage.setTitle("Cursist overwiew");
+            stage.setScene(cursistsScene);
+            stage.show();
+        });
+
         // zet de buttons in een horizontale box
         HBox buttonsMenu = new HBox(createButton, readButton, deleteButton, updateButton);
 
+        // Maak borderpane aan en voeg beide vbox & hbox samen.
         BorderPane mainPane = new BorderPane();
         mainPane.setTop(createFields);
         mainPane.setBottom(buttonsMenu);
 
+        // laad de mainpane in de scene
         Scene scene = new Scene(mainPane);
         stage.setTitle("Cursist Beheer");
         stage.setScene(scene);

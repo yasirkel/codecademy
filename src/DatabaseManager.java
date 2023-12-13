@@ -4,10 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private Connection connection;
-    private final String connectionUrl = "jdbc:sqlserver://localhost;databaseName=codecademy;username=admin;password=admin123;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
     // Connection beheert informatie over de connectie met de database.
     private Connection con = null;
     // Statement zorgt dat we een SQL query kunnen uitvoeren.
@@ -27,7 +28,7 @@ public class DatabaseManager {
     // Query method om code dublicatie te verminderen
     public ResultSet query(String sqlQuery) {
         try {
-            stmt = con.createStatement();
+            stmt = connection.createStatement();
             // Voer de query uit op de database.
             rs = stmt.executeQuery(sqlQuery);
             return rs;
@@ -35,6 +36,23 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ArrayList<String> getAllCursist() {
+        ArrayList<String> cursistNames = new ArrayList<>();
+
+        try {
+            ResultSet query = query("SELECT * FROM Cursist");
+
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                cursistNames.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cursistNames;
     }
 
     public void saveCursist(Cursist cursist) {
