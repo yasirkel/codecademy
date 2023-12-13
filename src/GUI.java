@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -100,8 +101,14 @@ public class GUI extends Application {
         Button readButton = new Button("All Cursists");
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
+        Button backHome = new Button("< Home");
+        backHome.setOnAction(e -> {
 
+        });
+
+        // CRUD (read) functionaliteit
         readButton.setOnAction(e -> {
+            // arraylist met alle cursist namen
             ArrayList<String> cursistNames = db.getAllCursist();
 
             ListView<String> list = new ListView<>();
@@ -109,7 +116,12 @@ public class GUI extends Application {
 
             list.setItems(items);
 
-            Scene cursistsScene = new Scene(list);
+            BorderPane cursistPage = new BorderPane();
+
+            cursistPage.setTop(list);
+            cursistPage.setBottom(backHome);
+
+            Scene cursistsScene = new Scene(cursistPage);
             stage.setTitle("Cursist overwiew");
             stage.setScene(cursistsScene);
             stage.show();
