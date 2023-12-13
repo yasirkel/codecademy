@@ -4,7 +4,7 @@ public class Cursist {
     private String emailAddress;
     private String name;
     private LocalDate birthDate;
-    private boolean sex;
+    private String sex;
     private String address;
     private String residence;
     private String country;
@@ -34,11 +34,11 @@ public class Cursist {
         this.birthDate = birthDate;
     }
 
-    public boolean isSex() {
+    public String isSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
