@@ -12,18 +12,36 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
+    private CursistController cursistController;
+
     @Override
     public void start(Stage stage) {
-        stage.setTitle("Codecademy");
+        cursistController = new CursistController();
 
-        BorderPane mainPane = new BorderPane();
-        mainPane.setPadding(new Insets(5));
+        TextField naamField = new TextField("Naam");
+        TextField emailField = new TextField("Email");
+        Button addButton = new Button("Voeg Cursist Toe");
 
-        // mainPane.setTop(inputFields);
+        addButton.setOnAction(e -> {
+            String naam = naamField.getText();
+            String email = emailField.getText();
 
-        Scene mainView = new Scene(mainPane);
+            Cursist nieuweCursist = new Cursist();
+            nieuweCursist.setName(naam);
+            nieuweCursist.setEmailAddress(email);
 
-        stage.setScene(mainView);
+            cursistController.toevoegenCursist(nieuweCursist);
+
+            // Voeg hier code toe om feedback aan de gebruiker te tonen
+            System.out
+                    .println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress());
+        });
+
+        VBox root = new VBox(naamField, emailField, addButton);
+        Scene scene = new Scene(root, 300, 200);
+
+        stage.setTitle("Cursist");
+        stage.setScene(scene);
         stage.show();
     }
 
