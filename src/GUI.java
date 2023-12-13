@@ -37,8 +37,8 @@ public class GUI extends Application {
         TextField addressField = new TextField();
         addressField.setPromptText("Address");
 
-        TextField residenceField = new TextField();
-        residenceField.setPromptText("Residence");
+        TextField cityField = new TextField();
+        cityField.setPromptText("City");
 
         TextField countryField = new TextField();
         countryField.setPromptText("Country");
@@ -62,7 +62,7 @@ public class GUI extends Application {
 
             String gender = genderChoiceBox.getValue(); // Hier krijg je de geselecteerde waarde van de ChoiceBox
             String address = addressField.getText();
-            String residence = residenceField.getText();
+            String city = cityField.getText();
             String country = countryField.getText();
 
             Cursist nieuweCursist = new Cursist();
@@ -71,7 +71,7 @@ public class GUI extends Application {
             nieuweCursist.setBirthDate(birthDate);
             nieuweCursist.setSex(gender);
             nieuweCursist.setAddress(address);
-            nieuweCursist.setResidence(residence);
+            nieuweCursist.setCity(city);
             nieuweCursist.setCountry(country);
 
             cursistController.toevoegenCursist(nieuweCursist);
@@ -79,12 +79,12 @@ public class GUI extends Application {
             // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
             System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
                     + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
-                    + nieuweCursist.isSex() + ", " + nieuweCursist.getResidence()
+                    + nieuweCursist.isSex() + ", " + nieuweCursist.getCity()
                     + ", " + nieuweCursist.getCountry());
         });
 
         VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
-                residenceField,
+                cityField,
                 countryField, addButton);
 
         // CRUD Buttons worden aangemaakt

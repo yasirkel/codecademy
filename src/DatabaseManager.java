@@ -39,14 +39,14 @@ public class DatabaseManager {
 
     public void saveCursist(Cursist cursist) {
         try {
-            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Sex, Address, Residence, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Cursist (EmailAddress, Name, BirthDate, Sex, Address, City, Country) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, cursist.getEmailAddress());
                 statement.setString(2, cursist.getName());
                 statement.setObject(3, cursist.getBirthDate());
                 statement.setString(4, cursist.isSex());
                 statement.setString(5, cursist.getAddress());
-                statement.setString(6, cursist.getResidence());
+                statement.setString(6, cursist.getCity());
                 statement.setString(7, cursist.getCountry());
 
                 statement.executeUpdate();
