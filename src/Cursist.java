@@ -6,7 +6,7 @@ public class Cursist {
     private LocalDate birthDate;
     private String sex;
     private String address;
-    private String residence;
+    private String city;
     private String country;
     private int contentItemID;
 
@@ -50,12 +50,12 @@ public class Cursist {
         this.address = address;
     }
 
-    public String getResidence() {
-        return residence;
+    public String getCity() {
+        return city;
     }
 
-    public void setResidence(String residence) {
-        this.residence = residence;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getCountry() {
