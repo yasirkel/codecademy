@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -67,13 +66,30 @@ public class GUI extends Application {
             cursistController.toevoegenCursist(nieuweCursist);
 
             // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
-            System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress() + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", " + nieuweCursist.isSex() + ", " + nieuweCursist.getAddress() + ", " + nieuweCursist.getResidence() + ", " + nieuweCursist.getCountry());
+            System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
+                    + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
+                    + nieuweCursist.isSex() + ", " + nieuweCursist.getAddress() + ", " + nieuweCursist.getResidence()
+                    + ", " + nieuweCursist.getCountry());
         });
 
-        VBox root = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField, residenceField,
+        VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
+                residenceField,
                 countryField, addButton);
-        Scene scene = new Scene(root, 300, 200);
 
+        // CRUD Buttons worden aangemaakt
+        Button createButton = new Button("Create Cursist");
+        Button readButton = new Button("All Cursists");
+        Button deleteButton = new Button("Delete");
+        Button updateButton = new Button("Update Cursist");
+
+        // zet de buttons in een horizontale box
+        HBox buttonsMenu = new HBox(createButton, readButton, deleteButton, updateButton);
+
+        BorderPane mainPane = new BorderPane();
+        mainPane.setTop(createFields);
+        mainPane.setBottom(buttonsMenu);
+
+        Scene scene = new Scene(mainPane);
         stage.setTitle("Cursist Beheer");
         stage.setScene(scene);
         stage.show();

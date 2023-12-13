@@ -3,9 +3,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseManager {
     private Connection connection;
+    private final String connectionUrl = "jdbc:sqlserver://localhost;databaseName=codecademy;username=admin;password=admin123;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
+    // Connection beheert informatie over de connectie met de database.
+    private Connection con = null;
+    // Statement zorgt dat we een SQL query kunnen uitvoeren.
+    private Statement stmt = null;
+    // ResultSet is de tabel die we van de database terugkrijgen.
+    private ResultSet rs = null;
 
     public DatabaseManager() {
         try {
@@ -14,6 +22,19 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // Query method om code dublicatie te verminderen
+    public ResultSet query(String sqlQuery) {
+        try {
+            stmt = con.createStatement();
+            // Voer de query uit op de database.
+            rs = stmt.executeQuery(sqlQuery);
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void saveCursist(Cursist cursist) {
