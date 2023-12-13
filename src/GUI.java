@@ -68,7 +68,7 @@ public class GUI extends Application {
             // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
             System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
                     + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
-                    + nieuweCursist.isSex() + ", " + nieuweCursist.getAddress() + ", " + nieuweCursist.getResidence()
+                    + nieuweCursist.isSex() + ", " + nieuweCursist.getResidence()
                     + ", " + nieuweCursist.getCountry());
         });
 
