@@ -2,7 +2,6 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,14 +31,11 @@ public class GUI extends Application {
         cursistController = new CursistController();
 
         // Create a welcome message for the homepage
-        Label welcomeLabel = new Label("Welkom bij cursist beheer");
-
-        // CRUD Buttons for the homepage
         Button createButton = new Button("Create Cursist");
         Button readButton = new Button("All Cursists");
+        Label welcomeLabel = new Label("Welkom bij cursist beheer");
 
         // Set the actions for the buttons on the homepage
-
         readButton.setOnAction(e -> {
             // arraylist met alle cursist namen
             ArrayList<String> cursistNames = cursistController.getAllCursists();
@@ -151,7 +146,7 @@ public class GUI extends Application {
         Button backHome = new Button("< Home");
 
         // zet de buttons in een horizontale box
-        HBox buttonsMenu = new HBox(deleteButton, updateButton);
+        HBox buttonsMenu = new HBox(deleteButton, updateButton, backHome);
 
         // Maak borderpane aan en voeg beide vbox & hbox samen.
         BorderPane mainPane = new BorderPane();
@@ -201,16 +196,21 @@ public class GUI extends Application {
         stage.setScene(mainScene);
         stage.show();
 
+        // Set the initial scene to the homepage
+        stage.setScene(homeScene);
+        stage.setTitle("Cursist Beheer");
+        stage.show();
+
+        createButton.setOnAction(e -> {
+            stage.setScene(mainScene);
+            stage.show();
+        });
+
         // Terug naar home knop
         backHome.setOnAction(e -> {
             stage.setScene(homeScene);
             stage.show();
         });
-
-        // Set the initial scene to the homepage
-        stage.setScene(homeScene);
-        stage.setTitle("Cursist Beheer");
-        stage.show();
 
     }
 
