@@ -21,6 +21,7 @@ public class GUI extends Application {
     private Button deleteButton;
     private Button backHome;
     private Scene cursistPage;
+    private Scene addCursistPage;
 
     @Override
     public void start(Stage stage) {
@@ -35,11 +36,15 @@ public class GUI extends Application {
 
         // Set the actions for the buttons on the homepage
         createButton.setOnAction(e -> {
+            stage.setScene(addCursistPage);
+            stage.show();
+        });
+        readButton.setOnAction(e -> {
             stage.setScene(cursistPage);
             stage.show();
         });
 
-         readButton.setOnAction(e -> {
+        readButton.setOnAction(e -> {
             // arraylist met alle cursist namen
             ArrayList<String> cursistNames = cursistController.getAllCursists();
 
@@ -54,7 +59,7 @@ public class GUI extends Application {
             // Add delete button to the right side of the page
             cursistPage.setLeft(deleteButton);
 
-            mainScene = new Scene(cursistPage);  // Assign mainScene here
+            mainScene = new Scene(cursistPage); // Assign mainScene here
 
             stage.setTitle("Cursist overzicht");
             stage.setScene(mainScene);
@@ -64,7 +69,6 @@ public class GUI extends Application {
         // Create layout for the homepage
         VBox homeLayout = new VBox(welcomeLabel, createButton, readButton);
         homeScene = new Scene(homeLayout, 300, 200);
-
 
         TextField naamField = new TextField();
         naamField.setPromptText("Naam");
@@ -89,6 +93,14 @@ public class GUI extends Application {
         countryField.setPromptText("Country");
 
         Button addButton = new Button("Voeg Cursist Toe");
+
+        BorderPane addCursistPage = new BorderPane();
+
+        mainScene = new Scene(addCursistPage); // Assign mainScene here
+
+            stage.setTitle("Cursist overzicht");
+            stage.setScene(mainScene);
+            stage.show();
 
         addButton.setOnAction(e -> {
             String naam = naamField.getText();
@@ -136,8 +148,8 @@ public class GUI extends Application {
             cityField.clear();
             countryField.clear();
 
-            // Go back to the homepage
             stage.setScene(homeScene);
+            stage.setTitle("Cursist Beheer");
             stage.show();
         });
 
@@ -177,7 +189,7 @@ public class GUI extends Application {
             // Add delete button to the right side of the page
             cursistPage.setLeft(deleteButton);
 
-            mainScene = new Scene(cursistPage);  // Assign mainScene here
+            mainScene = new Scene(cursistPage); // Assign mainScene here
 
             stage.setTitle("Cursist overzicht");
             stage.setScene(mainScene);
@@ -212,5 +224,4 @@ public class GUI extends Application {
         stage.show();
     }
 
-    
 }
