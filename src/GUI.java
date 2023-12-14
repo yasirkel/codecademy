@@ -102,9 +102,6 @@ public class GUI extends Application {
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
         Button backHome = new Button("< Home");
-        backHome.setOnAction(e -> {
-
-        });
 
         // CRUD (read) functionaliteit
         readButton.setOnAction(e -> {
@@ -140,6 +137,12 @@ public class GUI extends Application {
         stage.setTitle("Cursist Beheer");
         stage.setScene(scene);
         stage.show();
+
+        // Terug naar home knop
+        backHome.setOnAction(e -> {
+            stage.setScene(scene);
+            stage.show();
+        });
     }
 
 }
