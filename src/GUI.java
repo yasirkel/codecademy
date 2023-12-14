@@ -2,14 +2,12 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,11 +16,55 @@ public class GUI extends Application {
     private CursistController cursistController;
     private ListView<String> list;
     private ObservableList<String> items;
-    private Scene mainScene;  // Declare mainScene outside the start method
+    private Scene mainScene;
+    private Scene homeScene;
+    private Button deleteButton;
+    private Button backHome;
+    private Scene cursistPage;
 
     @Override
     public void start(Stage stage) {
         cursistController = new CursistController();
+
+        // Create a welcome message for the homepage
+        Label welcomeLabel = new Label("Welkom bij cursist beheer");
+
+        // CRUD Buttons for the homepage
+        Button createButton = new Button("Create Cursist");
+        Button readButton = new Button("All Cursists");
+
+        // Set the actions for the buttons on the homepage
+        createButton.setOnAction(e -> {
+            stage.setScene(cursistPage);
+            stage.show();
+        });
+
+         readButton.setOnAction(e -> {
+            // arraylist met alle cursist namen
+            ArrayList<String> cursistNames = cursistController.getAllCursists();
+
+            items.setAll(cursistNames);
+            list.setItems(items);
+
+            BorderPane cursistPage = new BorderPane();
+
+            cursistPage.setTop(list);
+            cursistPage.setBottom(backHome);
+
+            // Add delete button to the right side of the page
+            cursistPage.setLeft(deleteButton);
+
+            mainScene = new Scene(cursistPage);  // Assign mainScene here
+
+            stage.setTitle("Cursist overzicht");
+            stage.setScene(mainScene);
+            stage.show();
+        });
+
+        // Create layout for the homepage
+        VBox homeLayout = new VBox(welcomeLabel, createButton, readButton);
+        homeScene = new Scene(homeLayout, 300, 200);
+
 
         TextField naamField = new TextField();
         naamField.setPromptText("Naam");
@@ -93,20 +135,22 @@ public class GUI extends Application {
             addressField.clear();
             cityField.clear();
             countryField.clear();
+
+            // Go back to the homepage
+            stage.setScene(homeScene);
+            stage.show();
         });
 
         VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
                 cityField, countryField, addButton);
 
-        // CRUD Buttons worden aangemaakt
-        Button createButton = new Button("Create Cursist");
-        Button readButton = new Button("All Cursists");
+        // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
         Button backHome = new Button("< Home");
 
         // zet de buttons in een horizontale box
-        HBox buttonsMenu = new HBox(createButton, readButton, deleteButton, updateButton);
+        HBox buttonsMenu = new HBox(deleteButton, updateButton);
 
         // Maak borderpane aan en voeg beide vbox & hbox samen.
         BorderPane mainPane = new BorderPane();
@@ -117,8 +161,7 @@ public class GUI extends Application {
         list = new ListView<>();
         items = FXCollections.observableArrayList();
 
-        
-        // CRUD (read) functionaliteit
+        // CRUD (read) functionality...
         readButton.setOnAction(e -> {
             // arraylist met alle cursist namen
             ArrayList<String> cursistNames = cursistController.getAllCursists();
@@ -151,16 +194,21 @@ public class GUI extends Application {
             }
         });
 
-        // Terug naar home knop
-        backHome.setOnAction(e -> {
-            stage.setScene(mainScene);
-            stage.show();
-        });
-
         // Create main scene
         Scene mainScene = new Scene(mainPane);
         stage.setTitle("Cursist Beheer");
         stage.setScene(mainScene);
+        stage.show();
+
+        // Terug naar home knop
+        backHome.setOnAction(e -> {
+            stage.setScene(homeScene);
+            stage.show();
+        });
+
+        // Set the initial scene to the homepage
+        stage.setScene(homeScene);
+        stage.setTitle("Cursist Beheer");
         stage.show();
     }
 
