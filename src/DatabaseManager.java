@@ -8,12 +8,6 @@ import java.util.ArrayList;
 
 public class DatabaseManager {
     private Connection connection;
-    // Connection beheert informatie over de connectie met de database.
-    private Connection con = null;
-    // Statement zorgt dat we een SQL query kunnen uitvoeren.
-    private Statement stmt = null;
-    // ResultSet is de tabel die we van de database terugkrijgen.
-    private ResultSet rs = null;
 
     public DatabaseManager() {
         try {
@@ -24,13 +18,10 @@ public class DatabaseManager {
         }
     }
 
-    // Query method om code dublicatie te verminderen
     public ResultSet query(String sqlQuery) {
         try {
-            stmt = connection.createStatement();
-            // Voer de query uit op de database.
-            rs = stmt.executeQuery(sqlQuery);
-            return rs;
+            Statement stmt = connection.createStatement();
+            return stmt.executeQuery(sqlQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,7 +32,7 @@ public class DatabaseManager {
         ArrayList<String> cursistNames = new ArrayList<>();
 
         try {
-            ResultSet query = query("SELECT * FROM Cursist");
+            ResultSet rs = query("SELECT * FROM Cursist");
 
             while (rs.next()) {
                 String name = rs.getString("Name");
@@ -73,5 +64,17 @@ public class DatabaseManager {
         }
     }
 
-    // Implementeer andere CRUD-operaties
+    public void deleteCursist(String cursistName) {
+        try {
+            String query = "DELETE FROM Cursist WHERE Name = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, cursistName);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Implement other CRUD operations
 }

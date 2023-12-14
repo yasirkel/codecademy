@@ -1,4 +1,4 @@
-
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,10 +15,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class GUI extends Application {
     private CursistController cursistController;
-    private DatabaseManager db = new DatabaseManager();
+    private ListView<String> list;
+    private ObservableList<String> items;
+    private Scene mainScene; // Declare mainScene outside the start method
 
     @Override
     public void start(Stage stage) {
@@ -84,11 +89,19 @@ public class GUI extends Application {
                     + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
                     + nieuweCursist.isSex() + ", " + nieuweCursist.getCity()
                     + ", " + nieuweCursist.getCountry());
+
+            // Clear the input fields after adding a cursist
+            naamField.clear();
+            emailField.clear();
+            birthDateField.clear();
+            genderChoiceBox.getSelectionModel().selectFirst();
+            addressField.clear();
+            cityField.clear();
+            countryField.clear();
         });
 
         VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
-                cityField,
-                countryField, addButton);
+                cityField, countryField, addButton);
 
         // CRUD Buttons worden aangemaakt
         Button createButton = new Button("Create Cursist");
@@ -96,27 +109,6 @@ public class GUI extends Application {
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
         Button backHome = new Button("< Home");
-
-        // CRUD (read) functionaliteit
-        readButton.setOnAction(e -> {
-            // arraylist met alle cursist namen
-            ArrayList<String> cursistNames = db.getAllCursist();
-
-            ListView<String> list = new ListView<>();
-            ObservableList<String> items = FXCollections.observableArrayList(cursistNames);
-
-            list.setItems(items);
-
-            BorderPane cursistPage = new BorderPane();
-
-            cursistPage.setTop(list);
-            cursistPage.setBottom(backHome);
-
-            Scene cursistsScene = new Scene(cursistPage);
-            stage.setTitle("Cursist overwiew");
-            stage.setScene(cursistsScene);
-            stage.show();
-        });
 
         // zet de buttons in een horizontale box
         HBox buttonsMenu = new HBox(createButton, readButton, deleteButton, updateButton);
@@ -126,17 +118,54 @@ public class GUI extends Application {
         mainPane.setTop(createFields);
         mainPane.setBottom(buttonsMenu);
 
-        // laad de mainpane in de scene
-        Scene scene = new Scene(mainPane);
-        stage.setTitle("Cursist Beheer");
-        stage.setScene(scene);
-        stage.show();
+        // Initialize list and items
+        list = new ListView<>();
+        items = FXCollections.observableArrayList();
+
+        // CRUD (read) functionaliteit
+        readButton.setOnAction(e -> {
+            // arraylist met alle cursist namen
+            ArrayList<String> cursistNames = cursistController.getAllCursists();
+
+            items.setAll(cursistNames);
+            list.setItems(items);
+
+            BorderPane cursistPage = new BorderPane();
+
+            cursistPage.setTop(list);
+            cursistPage.setBottom(backHome);
+
+            // Add delete button to the right side of the page
+            cursistPage.setLeft(deleteButton);
+
+            mainScene = new Scene(cursistPage); // Assign mainScene here
+
+            stage.setTitle("Cursist overzicht");
+            stage.setScene(mainScene);
+            stage.show();
+        });
+
+        // Handle delete button action
+        deleteButton.setOnAction(e -> {
+            String selectedCursist = list.getSelectionModel().getSelectedItem();
+
+            if (selectedCursist != null) {
+                cursistController.deleteCursist(selectedCursist);
+                items.remove(selectedCursist);
+            }
+        });
 
         // Terug naar home knop
         backHome.setOnAction(e -> {
-            stage.setScene(scene);
+            stage.setScene(mainScene);
             stage.show();
         });
+
+        // Create main scene
+        Scene mainScene = new Scene(mainPane);
+        stage.setTitle("Cursist Beheer");
+        stage.setScene(mainScene);
+        stage.show();
     }
 
 }
