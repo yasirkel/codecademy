@@ -1,15 +1,13 @@
-<<<<<<< HEAD
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-=======
->>>>>>> 9785e352753b99a029de6711fff7c1308cd68cea
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,7 +25,6 @@ public class GUI extends Application {
     private Button deleteButton;
     private Button backHome;
     private Scene cursistPage;
-    private Scene addCursistPage;
 
     @Override
     public void start(Stage stage) {
@@ -39,18 +36,6 @@ public class GUI extends Application {
         Label welcomeLabel = new Label("Welkom bij cursist beheer");
 
         // Set the actions for the buttons on the homepage
-<<<<<<< HEAD
-=======
-        createButton.setOnAction(e -> {
-            stage.setScene(addCursistPage);
-            stage.show();
-        });
-        readButton.setOnAction(e -> {
-            stage.setScene(cursistPage);
-            stage.show();
-        });
-
->>>>>>> 9785e352753b99a029de6711fff7c1308cd68cea
         readButton.setOnAction(e -> {
             // arraylist met alle cursist namen
             ArrayList<String> cursistNames = cursistController.getAllCursists();
@@ -101,14 +86,6 @@ public class GUI extends Application {
 
         Button addButton = new Button("Voeg Cursist Toe");
 
-        BorderPane addCursistPage = new BorderPane();
-
-        mainScene = new Scene(addCursistPage); // Assign mainScene here
-
-            stage.setTitle("Cursist overzicht");
-            stage.setScene(mainScene);
-            stage.show();
-
         addButton.setOnAction(e -> {
             String naam = naamField.getText();
             String email = emailField.getText();
@@ -155,8 +132,8 @@ public class GUI extends Application {
             cityField.clear();
             countryField.clear();
 
+            // Go back to the homepage
             stage.setScene(homeScene);
-            stage.setTitle("Cursist Beheer");
             stage.show();
         });
 
@@ -224,6 +201,7 @@ public class GUI extends Application {
         stage.setTitle("Cursist Beheer");
         stage.show();
 
+        // Create button op homepage
         createButton.setOnAction(e -> {
             stage.setScene(mainScene);
             stage.show();
@@ -235,13 +213,6 @@ public class GUI extends Application {
             stage.show();
         });
 
-<<<<<<< HEAD
-=======
-        // Set the initial scene to the homepage
-        stage.setScene(homeScene);
-        stage.setTitle("Cursist Beheer");
-        stage.show();
->>>>>>> 9785e352753b99a029de6711fff7c1308cd68cea
     }
 
 }
