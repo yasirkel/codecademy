@@ -24,14 +24,19 @@ public class GUI extends Application {
     private ObservableList<String> items;
     private Scene mainScene;
     private Scene homeScene;
-    private Button deleteButton;
     private Button backHome;
-    private Scene cursistPage;
     private DatabaseManager db = new DatabaseManager();
 
     @Override
     public void start(Stage stage) {
         cursistController = new CursistController();
+
+        Button backToHomeButton = new Button("< Home");
+        backHome = new Button("< Home");
+        backHome.setOnAction(j -> {
+            stage.setScene(homeScene);
+            stage.show();
+        });
 
         // Create a welcome message for the homepage
         Button createButton = new Button("Create Cursist");
@@ -61,34 +66,34 @@ public class GUI extends Application {
         homePane.setPadding(padding);
         homeScene = new Scene(homePane, 600, 400);
 
-        TextField naamField = new TextField();
-        naamField.setPromptText("Naam");
+        TextField createNaamField = new TextField();
+        createNaamField.setPromptText("Naam");
 
-        TextField emailField = new TextField();
-        emailField.setPromptText("Email");
+        TextField createEmailField = new TextField();
+        createEmailField.setPromptText("Email");
 
-        TextField birthDateField = new TextField();
-        birthDateField.setPromptText("Birthdate");
+        TextField createBirthDateField = new TextField();
+        createBirthDateField.setPromptText("Birthdate");
 
         ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
         genderChoiceBox.getItems().addAll("Selecteer geslacht", "Man", "Vrouw");
         genderChoiceBox.getSelectionModel().selectFirst();
 
-        TextField addressField = new TextField();
-        addressField.setPromptText("Address");
+        TextField createAddressField = new TextField();
+        createAddressField.setPromptText("Address");
 
-        TextField cityField = new TextField();
-        cityField.setPromptText("City");
+        TextField createCityField = new TextField();
+        createCityField.setPromptText("City");
 
-        TextField countryField = new TextField();
-        countryField.setPromptText("Country");
+        TextField createCountryField = new TextField();
+        createCountryField.setPromptText("Country");
 
         Button addButton = new Button("Voeg Cursist Toe");
 
         addButton.setOnAction(e -> {
-            String naam = naamField.getText();
-            String email = emailField.getText();
-            String birthDateText = birthDateField.getText();
+            String naam = createNaamField.getText();
+            String email = createEmailField.getText();
+            String birthDateText = createBirthDateField.getText();
 
             // Voeg controle toe om lege invoer te voorkomen
             if (birthDateText.trim().isEmpty()) {
@@ -101,9 +106,9 @@ public class GUI extends Application {
             LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
 
             String gender = genderChoiceBox.getValue(); // Hier krijg je de geselecteerde waarde van de ChoiceBox
-            String address = addressField.getText();
-            String city = cityField.getText();
-            String country = countryField.getText();
+            String address = createAddressField.getText();
+            String city = createCityField.getText();
+            String country = createCountryField.getText();
 
             Cursist nieuweCursist = new Cursist();
             nieuweCursist.setName(naam);
@@ -123,27 +128,27 @@ public class GUI extends Application {
                     + ", " + nieuweCursist.getCountry());
 
             // Clear the input fields after adding a cursist
-            naamField.clear();
-            emailField.clear();
-            birthDateField.clear();
+            createNaamField.clear();
+            createEmailField.clear();
+            createBirthDateField.clear();
             genderChoiceBox.getSelectionModel().selectFirst();
-            addressField.clear();
-            cityField.clear();
-            countryField.clear();
+            createAddressField.clear();
+            createCityField.clear();
+            createCountryField.clear();
 
         });
 
-        VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
-                cityField, countryField);
+        VBox createFields = new VBox(createNaamField, createEmailField, createBirthDateField, genderChoiceBox,
+                createAddressField,
+                createCityField, createCountryField);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
-        Button backHome = new Button("< Home");
 
         // zet de buttons in een horizontale box
-        HBox buttonsMenu = new HBox(addButton, backHome);
+        HBox buttonsMenu = new HBox(addButton, backToHomeButton);
 
         Insets buttonsMenuPadding = new Insets(10);
         addButton.setPadding(buttonsMenuPadding);
@@ -206,7 +211,6 @@ public class GUI extends Application {
             }
         });
 
-        // Create main scene
         Label mainSceneTitle = new Label("Create a new cursist");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
@@ -215,18 +219,23 @@ public class GUI extends Application {
         BorderPane.setAlignment(mainSceneTitle, Pos.CENTER);
         Insets mainPanePadding = new Insets(25);
         mainPane.setPadding(mainPanePadding);
+        backToHomeButton.setPadding(buttonsMenuPadding);
+
+        // mainPane.setBottom(backToHomeButton);
+        backToHomeButton.setOnAction(e -> {
+            stage.setScene(homeScene);
+            stage.show();
+        });
 
         Scene mainScene = new Scene(mainPane, 600, 400);
-        stage.setTitle("Cursist Beheer");
+        stage.setTitle("Cursist Management");
         stage.setScene(mainScene);
         stage.show();
 
-        // Set the initial scene to the homepage
         stage.setScene(homeScene);
-        stage.setTitle("Cursist Beheer");
+        stage.setTitle("Cursist Management");
         stage.show();
-
-        // // Create button op homepage
+        // Create button op homepage
         createButton.setOnAction(e -> {
             stage.setScene(mainScene);
             stage.show();
@@ -239,6 +248,8 @@ public class GUI extends Application {
             BorderPane.setAlignment(title, Pos.TOP_CENTER);
             title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
+
+            // Use the class-level backHome variable
             VBox buttonsEdit = new VBox(chooseButton, backHome);
             buttonsEdit.setSpacing(15);
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
@@ -256,27 +267,39 @@ public class GUI extends Application {
             Scene updateScene = new Scene(editPane, 600, 400);
             stage.setScene(updateScene);
             stage.show();
+            TextField updateNaamField = new TextField();
+            TextField updateEmailField = new TextField();
+            TextField updateBirthDateField = new TextField();
+            TextField updateAddressField = new TextField();
+            TextField updateCityField = new TextField();
+            TextField updateCountryField = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
                 Label editWindowTitle = new Label("Edit window");
                 Button confirmButton = new Button("Confirm");
                 confirmButton.setPadding(buttonsMenuPadding);
+
+                // Use the class-level buttonsEdit variable
                 VBox editButtons = new VBox(backHome, confirmButton);
 
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursist = db.getCursistByName(selectedCursistName);
 
-                naamField.setText(selectedCursist.getName());
-                emailField.setText(selectedCursist.getEmailAddress());
-                birthDateField.setText(selectedCursist.getBirthDate().toString());
+                updateNaamField.setText(selectedCursist.getName());
+                updateEmailField.setText(selectedCursist.getEmailAddress());
+                updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
                 genderChoiceBox.getSelectionModel().selectFirst();
-                addressField.setText(selectedCursist.getAddress());
-                cityField.setText(selectedCursist.getCity());
-                countryField.setText(selectedCursist.getCountry());
+                updateAddressField.setText(selectedCursist.getAddress());
+                updateCityField.setText(selectedCursist.getCity());
+                updateCountryField.setText(selectedCursist.getCountry());
+
+                VBox updateFields = new VBox(updateNaamField, updateEmailField, updateBirthDateField,
+                        updateAddressField, updateCityField, updateCountryField);
+                updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
-                editWindow.setCenter(createFields);
+                editWindow.setCenter(updateFields);
                 editWindow.setLeft(editButtons);
 
                 Scene confirmEdit = new Scene(editWindow, 600, 400);
@@ -284,23 +307,17 @@ public class GUI extends Application {
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
-                    selectedCursist.setEmailAddress(emailField.getText());
-                    selectedCursist.setName(naamField.getText());
-                    selectedCursist.setCity(cityField.getText());
-                    selectedCursist.setCountry(countryField.getText());
-                    selectedCursist.setAddress(addressField.getText());
+                    selectedCursist.setEmailAddress(updateEmailField.getText());
+                    selectedCursist.setName(updateNaamField.getText());
+                    selectedCursist.setCity(updateCityField.getText());
+                    selectedCursist.setCountry(updateCountryField.getText());
+                    selectedCursist.setAddress(updateAddressField.getText());
 
                     db.updateCursistFields(selectedCursist);
 
-                    System.out.println("Edits completed succesfully");
+                    System.out.println("Edits completed successfully");
                 });
-
             });
-
-        });
-        backHome.setOnAction(j -> {
-            stage.setScene(homeScene);
-            stage.show();
         });
 
     }

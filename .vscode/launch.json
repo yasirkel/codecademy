@@ -1,42 +1,49 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "GUI",
-            "request": "launch",
-            "mainClass": "GUI",
-            "projectName": "codecademy_a4514a6b"
-        },
-        {
-            "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "App",
-            "projectName": ""
-        },
-        {
-            "type": "java",
-            "name": "CodeCademy",
-            "request": "launch",
-            "mainClass": "CodeCademy",
-            "projectName": "codecademy_a4514a6b"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "CodeCademy",
-            "request": "launch",
-            "mainClass": "CodeCademy",
-            "projectName": "codecademy_db527fad"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "CodeCademy",
+      "projectName": "CodeCademy_dcab69ce"
+    },
+    {
+      "type": "java",
+      "name": "GUI",
+      "request": "launch",
+      "mainClass": "GUI",
+      "projectName": "codecademy_a4514a6b"
+    },
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "App",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "CodeCademy",
+      "projectName": "codecademy_a4514a6b"
+    },
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "CodeCademy",
+      "projectName": "codecademy_db527fad"
+    }
+  ]
 }
