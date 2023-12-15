@@ -7,7 +7,7 @@ public class CursistController {
         this.databaseManager = new DatabaseManager();
     }
 
-    public void toevoegenCursist(Cursist cursist) {
+    public void addCursist(Cursist cursist) {
         databaseManager.saveCursist(cursist);
     }
 

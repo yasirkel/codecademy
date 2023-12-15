@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class GUI extends Application {
     private CursistController cursistController;
@@ -34,37 +32,33 @@ public class GUI extends Application {
         // Create a welcome message for the homepage
         Button createButton = new Button("Create Cursist");
         Button readButton = new Button("All Cursists");
-        Label welcomeLabel = new Label("Welkom bij cursist beheer");
+        Label welcomeLabel = new Label("Welcome to Cursist Management");
+        Insets welcomeLabelPadding = new Insets(0, 0, 25, 0);
+        welcomeLabel.setPadding(welcomeLabelPadding);
+        welcomeLabel.setStyle("-fx-font-size: 30;");
         Button editButton = new Button("Edit Cursist");
 
-        // Set the actions for the buttons on the homepage
-        readButton.setOnAction(e -> {
-            // arraylist met alle cursist namen
-            ArrayList<String> cursistNames = cursistController.getAllCursists();
-
-            items.setAll(cursistNames);
-            list.setItems(items);
-
-            BorderPane cursistPage = new BorderPane();
-
-            cursistPage.setTop(list);
-            cursistPage.setBottom(backHome);
-            // Add delete button to the right side of the page
-            cursistPage.setLeft(deleteButton);
-
-            mainScene = new Scene(cursistPage); // Assign mainScene here
-
-            stage.setTitle("Cursist overzicht");
-            stage.setScene(mainScene);
-            stage.show();
-        });
-
         // Create layout for the homepage
-        VBox homeLayout = new VBox(welcomeLabel, createButton, readButton, editButton);
-        homeScene = new Scene(homeLayout, 300, 200);
+        BorderPane homePane = new BorderPane();
+        BorderPane.setAlignment(welcomeLabel, Pos.CENTER);
+        homePane.setTop(welcomeLabel);
+        VBox homeLayout = new VBox(10, createButton, readButton, editButton);
 
-        TextField naamField = new TextField();
-        naamField.setPromptText("Naam");
+        createButton.setPrefSize(150, 50);
+        createButton.setStyle("-fx-font-size: 20");
+        readButton.setPrefSize(150, 50);
+        readButton.setStyle("-fx-font-size: 20");
+        editButton.setPrefSize(150, 50);
+        editButton.setStyle("-fx-font-size: 20");
+
+        homeLayout.setAlignment(Pos.CENTER);
+        homePane.setCenter(homeLayout);
+        Insets padding = new Insets(100);
+        homePane.setPadding(padding);
+        homeScene = new Scene(homePane, 650, 400);
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Name");
 
         TextField emailField = new TextField();
         emailField.setPromptText("Email");
@@ -73,7 +67,7 @@ public class GUI extends Application {
         birthDateField.setPromptText("Birthdate");
 
         ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
-        genderChoiceBox.getItems().addAll("Selecteer geslacht", "Man", "Vrouw");
+        genderChoiceBox.getItems().addAll("Select Gender", "Male", "Female");
         genderChoiceBox.getSelectionModel().selectFirst();
 
         TextField addressField = new TextField();
@@ -85,74 +79,81 @@ public class GUI extends Application {
         TextField countryField = new TextField();
         countryField.setPromptText("Country");
 
-        Button addButton = new Button("Voeg Cursist Toe");
+        Button addButton = new Button("Add Cursist");
 
         addButton.setOnAction(e -> {
-            String naam = naamField.getText();
+            String name = nameField.getText();
             String email = emailField.getText();
             String birthDateText = birthDateField.getText();
 
-            // Voeg controle toe om lege invoer te voorkomen
+            // Add validation to prevent empty input
             if (birthDateText.trim().isEmpty()) {
-                // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
-                System.out.println("Ongeldige invoer voor geboortedatum.");
+                // Add code here to provide feedback to the user
+                System.out.println("Invalid input for birthdate.");
                 return;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
 
-            String gender = genderChoiceBox.getValue(); // Hier krijg je de geselecteerde waarde van de ChoiceBox
+            String gender = genderChoiceBox.getValue();
             String address = addressField.getText();
             String city = cityField.getText();
             String country = countryField.getText();
 
-            Cursist nieuweCursist = new Cursist();
-            nieuweCursist.setName(naam);
-            nieuweCursist.setEmailAddress(email);
-            nieuweCursist.setBirthDate(birthDate);
-            nieuweCursist.setSex(gender);
-            nieuweCursist.setAddress(address);
-            nieuweCursist.setCity(city);
-            nieuweCursist.setCountry(country);
+            Cursist newCursist = new Cursist();
+            newCursist.setName(name);
+            newCursist.setEmailAddress(email);
+            newCursist.setBirthDate(birthDate);
+            newCursist.setSex(gender);
+            newCursist.setAddress(address);
+            newCursist.setCity(city);
+            newCursist.setCountry(country);
 
-            cursistController.toevoegenCursist(nieuweCursist);
+            cursistController.addCursist(newCursist);
 
-            // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
-            System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
-                    + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
-                    + nieuweCursist.isSex() + ", " + nieuweCursist.getCity()
-                    + ", " + nieuweCursist.getCountry());
+            System.out.println("Cursist added: " + newCursist.getName() + ", " + newCursist.getEmailAddress()
+                    + ", " + newCursist.getBirthDate() + ", " + newCursist.getAddress() + ", "
+                    + newCursist.isSex() + ", " + newCursist.getCity()
+                    + ", " + newCursist.getCountry());
 
             // Clear the input fields after adding a cursist
-            naamField.clear();
+            nameField.clear();
             emailField.clear();
             birthDateField.clear();
             genderChoiceBox.getSelectionModel().selectFirst();
             addressField.clear();
             cityField.clear();
             countryField.clear();
-
-            // Go back to the homepage
-            stage.setScene(homeScene);
-            stage.show();
         });
 
-        VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
-                cityField, countryField, addButton);
+        VBox createFields = new VBox(nameField, emailField, birthDateField, genderChoiceBox, addressField,
+                cityField, countryField);
+        createFields.setSpacing(7);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
         Button backHome = new Button("< Home");
 
-        // zet de buttons in een horizontale box
-        HBox buttonsMenu = new HBox(deleteButton, updateButton, backHome);
+        // Put the buttons in a horizontal box
+        HBox buttonsMenu = new HBox(addButton, backHome);
 
-        // Maak borderpane aan en voeg beide vbox & hbox samen.
+        Insets buttonsMenuPadding = new Insets(10);
+        addButton.setPadding(buttonsMenuPadding);
+        deleteButton.setPadding(buttonsMenuPadding);
+        updateButton.setPadding(buttonsMenuPadding);
+        backHome.setPadding(buttonsMenuPadding);
+
+        buttonsMenu.setAlignment(Pos.CENTER);
+        buttonsMenu.setSpacing(5);
+
+        VBox vboxesCombined = new VBox(createFields, buttonsMenu);
+        vboxesCombined.setSpacing(10);
+
+        // Create a border pane and combine both vbox and hbox
         BorderPane mainPane = new BorderPane();
-        mainPane.setTop(createFields);
-        mainPane.setBottom(buttonsMenu);
+        mainPane.setCenter(vboxesCombined);
 
         // Initialize list and items
         list = new ListView<>();
@@ -160,23 +161,31 @@ public class GUI extends Application {
 
         // CRUD (read) functionality...
         readButton.setOnAction(e -> {
-            // arraylist met alle cursist namen
+            // ArrayList with all cursist names
             ArrayList<String> cursistNames = cursistController.getAllCursists();
 
             items.setAll(cursistNames);
             list.setItems(items);
+            list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
 
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setTop(list);
-            cursistPage.setBottom(backHome);
+            cursistPage.setCenter(list);
 
-            // Add delete button to the right side of the page
-            cursistPage.setLeft(deleteButton);
+            Label cursistPageTitle = new Label("Overview of all cursists");
+            cursistPageTitle.setStyle("-fx-font-size: 30;");
+            BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
+            cursistPage.setTop(cursistPageTitle);
 
-            mainScene = new Scene(cursistPage); // Assign mainScene here
+            VBox cursistPageButtons = new VBox(deleteButton, backHome);
+            cursistPageButtons.setSpacing(10);
+            Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
+            cursistPageButtons.setPadding(cursistPageButtonsPadding);
+            cursistPage.setLeft(cursistPageButtons);
 
-            stage.setTitle("Cursist overzicht");
+            mainScene = new Scene(cursistPage, 600, 400);
+
+            stage.setTitle("Cursist Overview");
             stage.setScene(mainScene);
             stage.show();
         });
@@ -192,42 +201,52 @@ public class GUI extends Application {
         });
 
         // Create main scene
-        Scene mainScene = new Scene(mainPane);
-        stage.setTitle("Cursist Beheer");
+        Label mainSceneTitle = new Label("Create a new cursist");
+        mainSceneTitle.setStyle("-fx-font-size: 30;");
+        Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
+        mainSceneTitle.setPadding(mainSceneTitlePadding);
+        mainPane.setTop(mainSceneTitle);
+        BorderPane.setAlignment(mainSceneTitle, Pos.CENTER);
+        Insets mainPanePadding = new Insets(25);
+        mainPane.setPadding(mainPanePadding);
+
+        Scene mainScene = new Scene(mainPane, 600, 400);
+        stage.setTitle("Cursist Management");
         stage.setScene(mainScene);
         stage.show();
 
         // Set the initial scene to the homepage
         stage.setScene(homeScene);
-        stage.setTitle("Cursist Beheer");
+        stage.setTitle("Cursist Management");
         stage.show();
 
-        // Create button op homepage
+        // Create button on homepage
         createButton.setOnAction(e -> {
             stage.setScene(mainScene);
-            stage.show();
-        });
-
-        // Terug naar home knop
-        backHome.setOnAction(e -> {
-            stage.setScene(homeScene);
             stage.show();
         });
 
         editButton.setOnAction(e -> {
             BorderPane editPane = new BorderPane();
             Label title = new Label("Choose cursist to edit");
+            BorderPane.setAlignment(title, Pos.TOP_CENTER);
+            title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
-
+            VBox buttonsEdit = new VBox(chooseButton, backHome);
+            buttonsEdit.setSpacing(15);
+            Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
+            buttonsEdit.setPadding(buttonsEditPadding);
             ArrayList<String> cursistNames = cursistController.getAllCursists();
 
             items.setAll(cursistNames);
             list.setItems(items);
 
-            editPane.setLeft(chooseButton);
+            editPane.setLeft(buttonsEdit);
             editPane.setTop(title);
-            editPane.setRight(list);
-            Scene updateScene = new Scene(editPane);
+            editPane.setCenter(list);
+            list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
+
+            Scene updateScene = new Scene(editPane, 600, 400);
             stage.setScene(updateScene);
             stage.show();
 
@@ -235,12 +254,13 @@ public class GUI extends Application {
                 BorderPane editWindow = new BorderPane();
                 Label editWindowTitle = new Label("Edit window");
                 Button confirmButton = new Button("Confirm");
+                confirmButton.setPadding(buttonsMenuPadding);
                 VBox editButtons = new VBox(backHome, confirmButton);
 
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursist = db.getCursistByName(selectedCursistName);
 
-                naamField.setText(selectedCursist.getName());
+                nameField.setText(selectedCursist.getName());
                 emailField.setText(selectedCursist.getEmailAddress());
                 birthDateField.setText(selectedCursist.getBirthDate().toString());
                 genderChoiceBox.getSelectionModel().selectFirst();
@@ -252,26 +272,27 @@ public class GUI extends Application {
                 editWindow.setCenter(createFields);
                 editWindow.setLeft(editButtons);
 
-                Scene confirmEdit = new Scene(editWindow);
+                Scene confirmEdit = new Scene(editWindow, 600, 400);
                 stage.setScene(confirmEdit);
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
                     selectedCursist.setEmailAddress(emailField.getText());
-                    selectedCursist.setName(naamField.getText());
+                    selectedCursist.setName(nameField.getText());
                     selectedCursist.setCity(cityField.getText());
                     selectedCursist.setCountry(countryField.getText());
                     selectedCursist.setAddress(addressField.getText());
 
                     db.updateCursistFields(selectedCursist);
 
-                    System.out.println("Edits completed succesfully");
+                    System.out.println("Edits completed successfully");
                 });
-
             });
-
         });
 
+        backHome.setOnAction(j -> {
+            stage.setScene(homeScene);
+            stage.show();
+        });
     }
-
 }
