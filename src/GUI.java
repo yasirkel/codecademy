@@ -9,10 +9,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class GUI extends Application {
     private CursistController cursistController;
@@ -32,9 +36,9 @@ public class GUI extends Application {
         // Create a welcome message for the homepage
         Button createButton = new Button("Create Cursist");
         Button readButton = new Button("All Cursists");
-        Label welcomeLabel = new Label("Welcome to Cursist Management");
-        Insets welcomeLabelPadding = new Insets(0, 0, 25, 0);
-        welcomeLabel.setPadding(welcomeLabelPadding);
+        Label welcomeLabel = new Label("Welkom bij cursist beheer");
+        Insets welcomeLabelPadding = new Insets(25);
+        welcomeLabel.setPadding(null);
         welcomeLabel.setStyle("-fx-font-size: 30;");
         Button editButton = new Button("Edit Cursist");
 
@@ -55,10 +59,10 @@ public class GUI extends Application {
         homePane.setCenter(homeLayout);
         Insets padding = new Insets(100);
         homePane.setPadding(padding);
-        homeScene = new Scene(homePane, 650, 400);
+        homeScene = new Scene(homePane, 600, 400);
 
-        TextField nameField = new TextField();
-        nameField.setPromptText("Name");
+        TextField naamField = new TextField();
+        naamField.setPromptText("Naam");
 
         TextField emailField = new TextField();
         emailField.setPromptText("Email");
@@ -67,7 +71,7 @@ public class GUI extends Application {
         birthDateField.setPromptText("Birthdate");
 
         ChoiceBox<String> genderChoiceBox = new ChoiceBox<>();
-        genderChoiceBox.getItems().addAll("Select Gender", "Male", "Female");
+        genderChoiceBox.getItems().addAll("Selecteer geslacht", "Man", "Vrouw");
         genderChoiceBox.getSelectionModel().selectFirst();
 
         TextField addressField = new TextField();
@@ -79,55 +83,57 @@ public class GUI extends Application {
         TextField countryField = new TextField();
         countryField.setPromptText("Country");
 
-        Button addButton = new Button("Add Cursist");
+        Button addButton = new Button("Voeg Cursist Toe");
 
         addButton.setOnAction(e -> {
-            String name = nameField.getText();
+            String naam = naamField.getText();
             String email = emailField.getText();
             String birthDateText = birthDateField.getText();
 
-            // Add validation to prevent empty input
+            // Voeg controle toe om lege invoer te voorkomen
             if (birthDateText.trim().isEmpty()) {
-                // Add code here to provide feedback to the user
-                System.out.println("Invalid input for birthdate.");
+                // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
+                System.out.println("Ongeldige invoer voor geboortedatum.");
                 return;
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
 
-            String gender = genderChoiceBox.getValue();
+            String gender = genderChoiceBox.getValue(); // Hier krijg je de geselecteerde waarde van de ChoiceBox
             String address = addressField.getText();
             String city = cityField.getText();
             String country = countryField.getText();
 
-            Cursist newCursist = new Cursist();
-            newCursist.setName(name);
-            newCursist.setEmailAddress(email);
-            newCursist.setBirthDate(birthDate);
-            newCursist.setSex(gender);
-            newCursist.setAddress(address);
-            newCursist.setCity(city);
-            newCursist.setCountry(country);
+            Cursist nieuweCursist = new Cursist();
+            nieuweCursist.setName(naam);
+            nieuweCursist.setEmailAddress(email);
+            nieuweCursist.setBirthDate(birthDate);
+            nieuweCursist.setSex(gender);
+            nieuweCursist.setAddress(address);
+            nieuweCursist.setCity(city);
+            nieuweCursist.setCountry(country);
 
-            cursistController.addCursist(newCursist);
+            cursistController.toevoegenCursist(nieuweCursist);
 
-            System.out.println("Cursist added: " + newCursist.getName() + ", " + newCursist.getEmailAddress()
-                    + ", " + newCursist.getBirthDate() + ", " + newCursist.getAddress() + ", "
-                    + newCursist.isSex() + ", " + newCursist.getCity()
-                    + ", " + newCursist.getCountry());
+            // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
+            System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
+                    + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
+                    + nieuweCursist.isSex() + ", " + nieuweCursist.getCity()
+                    + ", " + nieuweCursist.getCountry());
 
             // Clear the input fields after adding a cursist
-            nameField.clear();
+            naamField.clear();
             emailField.clear();
             birthDateField.clear();
             genderChoiceBox.getSelectionModel().selectFirst();
             addressField.clear();
             cityField.clear();
             countryField.clear();
+
         });
 
-        VBox createFields = new VBox(nameField, emailField, birthDateField, genderChoiceBox, addressField,
+        VBox createFields = new VBox(naamField, emailField, birthDateField, genderChoiceBox, addressField,
                 cityField, countryField);
         createFields.setSpacing(7);
 
@@ -136,7 +142,7 @@ public class GUI extends Application {
         Button updateButton = new Button("Update Cursist");
         Button backHome = new Button("< Home");
 
-        // Put the buttons in a horizontal box
+        // zet de buttons in een horizontale box
         HBox buttonsMenu = new HBox(addButton, backHome);
 
         Insets buttonsMenuPadding = new Insets(10);
@@ -151,7 +157,7 @@ public class GUI extends Application {
         VBox vboxesCombined = new VBox(createFields, buttonsMenu);
         vboxesCombined.setSpacing(10);
 
-        // Create a border pane and combine both vbox and hbox
+        // Maak borderpane aan en voeg beide vbox & hbox samen.
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(vboxesCombined);
 
@@ -161,7 +167,7 @@ public class GUI extends Application {
 
         // CRUD (read) functionality...
         readButton.setOnAction(e -> {
-            // ArrayList with all cursist names
+            // arraylist met alle cursist namen
             ArrayList<String> cursistNames = cursistController.getAllCursists();
 
             items.setAll(cursistNames);
@@ -172,7 +178,7 @@ public class GUI extends Application {
 
             cursistPage.setCenter(list);
 
-            Label cursistPageTitle = new Label("Overview of all cursists");
+            Label cursistPageTitle = new Label("Overzicht alle cursisten");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
@@ -183,9 +189,9 @@ public class GUI extends Application {
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
             cursistPage.setLeft(cursistPageButtons);
 
-            mainScene = new Scene(cursistPage, 600, 400);
+            mainScene = new Scene(cursistPage, 600, 400); // Assign mainScene here
 
-            stage.setTitle("Cursist Overview");
+            stage.setTitle("Cursist overzicht");
             stage.setScene(mainScene);
             stage.show();
         });
@@ -211,19 +217,20 @@ public class GUI extends Application {
         mainPane.setPadding(mainPanePadding);
 
         Scene mainScene = new Scene(mainPane, 600, 400);
-        stage.setTitle("Cursist Management");
+        stage.setTitle("Cursist Beheer");
         stage.setScene(mainScene);
         stage.show();
 
         // Set the initial scene to the homepage
         stage.setScene(homeScene);
-        stage.setTitle("Cursist Management");
+        stage.setTitle("Cursist Beheer");
         stage.show();
 
-        // Create button on homepage
+        // // Create button op homepage
         createButton.setOnAction(e -> {
             stage.setScene(mainScene);
             stage.show();
+
         });
 
         editButton.setOnAction(e -> {
@@ -260,7 +267,7 @@ public class GUI extends Application {
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursist = db.getCursistByName(selectedCursistName);
 
-                nameField.setText(selectedCursist.getName());
+                naamField.setText(selectedCursist.getName());
                 emailField.setText(selectedCursist.getEmailAddress());
                 birthDateField.setText(selectedCursist.getBirthDate().toString());
                 genderChoiceBox.getSelectionModel().selectFirst();
@@ -278,21 +285,24 @@ public class GUI extends Application {
 
                 confirmButton.setOnAction(g -> {
                     selectedCursist.setEmailAddress(emailField.getText());
-                    selectedCursist.setName(nameField.getText());
+                    selectedCursist.setName(naamField.getText());
                     selectedCursist.setCity(cityField.getText());
                     selectedCursist.setCountry(countryField.getText());
                     selectedCursist.setAddress(addressField.getText());
 
                     db.updateCursistFields(selectedCursist);
 
-                    System.out.println("Edits completed successfully");
+                    System.out.println("Edits completed succesfully");
                 });
-            });
-        });
 
+            });
+
+        });
         backHome.setOnAction(j -> {
             stage.setScene(homeScene);
             stage.show();
         });
+
     }
+
 }
