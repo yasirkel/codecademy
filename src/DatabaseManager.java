@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DatabaseManager {
@@ -71,6 +72,49 @@ public class DatabaseManager {
                 statement.setString(1, cursistName);
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Cursist getCursistByName(String name) {
+        try {
+            String query = "SELECT * FROM Cursist WHERE Name = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, name);
+                ResultSet rs = statement.executeQuery();
+
+                if (rs.next()) {
+                    Cursist cursist = new Cursist();
+                    cursist.setName(rs.getString("Name"));
+                    cursist.setEmailAddress(rs.getString("EmailAddress"));
+                    cursist.setBirthDate(rs.getObject("BirthDate", LocalDate.class));
+                    cursist.setSex(rs.getString("Sex"));
+                    cursist.setAddress(rs.getString("Address"));
+                    cursist.setCity(rs.getString("City"));
+                    cursist.setCountry(rs.getString("Country"));
+
+                    return cursist;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateCursistFields(Cursist cursist) {
+        String query = "UPDATE Cursist SET Name = ?, BirthDate = ?, Sex = ?, Address = ?, City = ?, Country = ? WHERE EmailAddress = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
+            updateStatement.setString(1, cursist.getName());
+            updateStatement.setObject(2, cursist.getBirthDate());
+            updateStatement.setString(3, cursist.isSex());
+            updateStatement.setString(4, cursist.getAddress());
+            updateStatement.setString(5, cursist.getCity());
+            updateStatement.setString(6, cursist.getCountry());
+            updateStatement.setString(7, cursist.getEmailAddress());
+            updateStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }

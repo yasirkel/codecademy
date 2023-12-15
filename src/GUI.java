@@ -25,6 +25,7 @@ public class GUI extends Application {
     private Button deleteButton;
     private Button backHome;
     private Scene cursistPage;
+    private DatabaseManager db = new DatabaseManager();
 
     @Override
     public void start(Stage stage) {
@@ -34,6 +35,7 @@ public class GUI extends Application {
         Button createButton = new Button("Create Cursist");
         Button readButton = new Button("All Cursists");
         Label welcomeLabel = new Label("Welkom bij cursist beheer");
+        Button editButton = new Button("Edit Cursist");
 
         // Set the actions for the buttons on the homepage
         readButton.setOnAction(e -> {
@@ -47,7 +49,6 @@ public class GUI extends Application {
 
             cursistPage.setTop(list);
             cursistPage.setBottom(backHome);
-
             // Add delete button to the right side of the page
             cursistPage.setLeft(deleteButton);
 
@@ -59,7 +60,7 @@ public class GUI extends Application {
         });
 
         // Create layout for the homepage
-        VBox homeLayout = new VBox(welcomeLabel, createButton, readButton);
+        VBox homeLayout = new VBox(welcomeLabel, createButton, readButton, editButton);
         homeScene = new Scene(homeLayout, 300, 200);
 
         TextField naamField = new TextField();
@@ -211,6 +212,64 @@ public class GUI extends Application {
         backHome.setOnAction(e -> {
             stage.setScene(homeScene);
             stage.show();
+        });
+
+        editButton.setOnAction(e -> {
+            BorderPane editPane = new BorderPane();
+            Label title = new Label("Choose cursist to edit");
+            Button chooseButton = new Button("Edit");
+
+            ArrayList<String> cursistNames = cursistController.getAllCursists();
+
+            items.setAll(cursistNames);
+            list.setItems(items);
+
+            editPane.setLeft(chooseButton);
+            editPane.setTop(title);
+            editPane.setRight(list);
+            Scene updateScene = new Scene(editPane);
+            stage.setScene(updateScene);
+            stage.show();
+
+            chooseButton.setOnAction(f -> {
+                BorderPane editWindow = new BorderPane();
+                Label editWindowTitle = new Label("Edit window");
+                Button confirmButton = new Button("Confirm");
+                VBox editButtons = new VBox(backHome, confirmButton);
+
+                String selectedCursistName = list.getSelectionModel().getSelectedItem();
+                Cursist selectedCursist = db.getCursistByName(selectedCursistName);
+
+                naamField.setText(selectedCursist.getName());
+                emailField.setText(selectedCursist.getEmailAddress());
+                birthDateField.setText(selectedCursist.getBirthDate().toString());
+                genderChoiceBox.getSelectionModel().selectFirst();
+                addressField.setText(selectedCursist.getAddress());
+                cityField.setText(selectedCursist.getCity());
+                countryField.setText(selectedCursist.getCountry());
+
+                editWindow.setTop(editWindowTitle);
+                editWindow.setCenter(createFields);
+                editWindow.setLeft(editButtons);
+
+                Scene confirmEdit = new Scene(editWindow);
+                stage.setScene(confirmEdit);
+                stage.show();
+
+                confirmButton.setOnAction(g -> {
+                    selectedCursist.setEmailAddress(emailField.getText());
+                    selectedCursist.setName(naamField.getText());
+                    selectedCursist.setCity(cityField.getText());
+                    selectedCursist.setCountry(countryField.getText());
+                    selectedCursist.setAddress(addressField.getText());
+
+                    db.updateCursistFields(selectedCursist);
+
+                    System.out.println("Edits completed succesfully");
+                });
+
+            });
+
         });
 
     }
