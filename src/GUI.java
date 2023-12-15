@@ -248,6 +248,7 @@ public class GUI extends Application {
             BorderPane.setAlignment(title, Pos.TOP_CENTER);
             title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
+            chooseButton.setPadding(buttonsMenuPadding);
 
             // Use the class-level backHome variable
             VBox buttonsEdit = new VBox(chooseButton, backHome);
