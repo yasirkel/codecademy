@@ -38,7 +38,7 @@ public class GUI extends Application {
         Button readButton = new Button("All Cursists");
         Label welcomeLabel = new Label("Welkom bij cursist beheer");
         Insets welcomeLabelPadding = new Insets(25);
-        welcomeLabel.setPadding(null);
+        welcomeLabel.setPadding(welcomeLabelPadding);
         welcomeLabel.setStyle("-fx-font-size: 30;");
         Button editButton = new Button("Edit Cursist");
 
@@ -114,7 +114,7 @@ public class GUI extends Application {
             nieuweCursist.setCity(city);
             nieuweCursist.setCountry(country);
 
-            cursistController.toevoegenCursist(nieuweCursist);
+            cursistController.addCursist(nieuweCursist);
 
             // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
             System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
