@@ -44,7 +44,7 @@ public class GUI extends Application {
         Label welcomeLabel = new Label("Welkom bij cursist beheer");
         Insets welcomeLabelPadding = new Insets(25);
         welcomeLabel.setPadding(welcomeLabelPadding);
-        welcomeLabel.setStyle("-fx-font-size: 30;");
+        welcomeLabel.setStyle("-fx-font-size: 24;");
         Button editButton = new Button("Edit Cursist");
 
         // Create layout for the homepage
@@ -54,11 +54,11 @@ public class GUI extends Application {
         VBox homeLayout = new VBox(10, createButton, readButton, editButton);
 
         createButton.setPrefSize(150, 50);
-        createButton.setStyle("-fx-font-size: 20");
+        createButton.setStyle("-fx-font-size: 18");
         readButton.setPrefSize(150, 50);
-        readButton.setStyle("-fx-font-size: 20");
+        readButton.setStyle("-fx-font-size: 18");
         editButton.setPrefSize(150, 50);
-        editButton.setStyle("-fx-font-size: 20");
+        editButton.setStyle("-fx-font-size: 18");
 
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);
@@ -182,17 +182,20 @@ public class GUI extends Application {
             BorderPane cursistPage = new BorderPane();
 
             cursistPage.setCenter(list);
+            BorderPane.setMargin(list, new Insets(25));
 
             Label cursistPageTitle = new Label("Overzicht alle cursisten");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            VBox cursistPageButtons = new VBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
-            cursistPage.setLeft(cursistPageButtons);
+            cursistPage.setBottom(cursistPageButtons);
+            cursistPageButtons.setAlignment(Pos.CENTER);
+            BorderPane.setMargin(cursistPageButtons, new Insets(0, 0, 25, 0));
 
             mainScene = new Scene(cursistPage, 600, 400); // Assign mainScene here
 
@@ -251,7 +254,7 @@ public class GUI extends Application {
             chooseButton.setPadding(buttonsMenuPadding);
 
             // Use the class-level backHome variable
-            VBox buttonsEdit = new VBox(chooseButton, backHome);
+            HBox buttonsEdit = new HBox(chooseButton, backHome);
             buttonsEdit.setSpacing(15);
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
@@ -260,10 +263,14 @@ public class GUI extends Application {
             items.setAll(cursistNames);
             list.setItems(items);
 
-            editPane.setLeft(buttonsEdit);
+            editPane.setBottom(buttonsEdit);
+            buttonsEdit.setAlignment(Pos.CENTER);
+            buttonsEdit.setAlignment(Pos.CENTER);
+            BorderPane.setMargin(buttonsEdit, new Insets(0, 0, 25, 0));
             editPane.setTop(title);
             editPane.setCenter(list);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
+            BorderPane.setMargin(list, new Insets(25));
 
             Scene updateScene = new Scene(editPane, 600, 400);
             stage.setScene(updateScene);
