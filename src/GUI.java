@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -121,11 +122,12 @@ public class GUI extends Application {
 
             cursistController.addCursist(nieuweCursist);
 
-            // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
-            System.out.println("Cursist toegevoegd: " + nieuweCursist.getName() + ", " + nieuweCursist.getEmailAddress()
-                    + ", " + nieuweCursist.getBirthDate() + ", " + nieuweCursist.getAddress() + ", "
-                    + nieuweCursist.isSex() + ", " + nieuweCursist.getCity()
-                    + ", " + nieuweCursist.getCountry());
+            // Add alert pop-up that cursist has been added
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Cursist added");
+            alert.setHeaderText(null);
+            alert.setContentText("Cursist added successfully.");
+            alert.showAndWait();
 
             // Clear the input fields after adding a cursist
             createNaamField.clear();
@@ -285,11 +287,12 @@ public class GUI extends Application {
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
                 Label editWindowTitle = new Label("Edit window");
+                editWindowTitle.setStyle("-fx-font-size: 30;");
                 Button confirmButton = new Button("Confirm");
                 confirmButton.setPadding(buttonsMenuPadding);
 
                 // Use the class-level buttonsEdit variable
-                VBox editButtons = new VBox(backHome, confirmButton);
+                HBox editButtons = new HBox(backHome, confirmButton);
 
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursist = db.getCursistByName(selectedCursistName);
@@ -307,8 +310,13 @@ public class GUI extends Application {
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
+                BorderPane.setAlignment(editWindowTitle, Pos.CENTER);
                 editWindow.setCenter(updateFields);
-                editWindow.setLeft(editButtons);
+                editWindow.setBottom(editButtons);
+                editButtons.setAlignment(Pos.CENTER);
+                editButtons.setSpacing(15);
+                BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
+                BorderPane.setMargin(updateFields, new Insets(25));
 
                 Scene confirmEdit = new Scene(editWindow, 600, 400);
                 stage.setScene(confirmEdit);
@@ -323,7 +331,17 @@ public class GUI extends Application {
 
                     db.updateCursistFields(selectedCursist);
 
-                    System.out.println("Edits completed successfully");
+                    Alert alert = new Alert(AlertType.INFORMATION);
+
+                    // Set the title and header text
+                    alert.setTitle("Confirmed");
+                    alert.setHeaderText(null);
+
+                    // Set the content text
+                    alert.setContentText("Edits have been confirmed!");
+
+                    // Show the alert
+                    alert.showAndWait();
                 });
             });
         });
