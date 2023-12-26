@@ -96,9 +96,9 @@ public class GUI extends Application {
             String email = createEmailField.getText();
             String birthDateText = createBirthDateField.getText();
 
-            // Voeg controle toe om lege invoer te voorkomen
+            // Check if all fields are filled
             if (birthDateText.trim().isEmpty()) {
-                // Voeg hier eventueel code toe om feedback aan de gebruiker te tonen
+                // Check if all fields are filled
                 System.out.println("Ongeldige invoer voor geboortedatum.");
                 return;
             }
@@ -106,7 +106,7 @@ public class GUI extends Application {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
 
-            String gender = genderChoiceBox.getValue(); // Hier krijg je de geselecteerde waarde van de ChoiceBox
+            String gender = genderChoiceBox.getValue(); // Get the selected gender
             String address = createAddressField.getText();
             String city = createCityField.getText();
             String country = createCountryField.getText();
@@ -149,7 +149,7 @@ public class GUI extends Application {
         Button deleteButton = new Button("Delete");
         Button updateButton = new Button("Update Cursist");
 
-        // zet de buttons in een horizontale box
+        // Create layout for the homepage
         HBox buttonsMenu = new HBox(addButton, backToHomeButton);
 
         Insets buttonsMenuPadding = new Insets(10);
@@ -164,7 +164,7 @@ public class GUI extends Application {
         VBox vboxesCombined = new VBox(createFields, buttonsMenu);
         vboxesCombined.setSpacing(10);
 
-        // Maak borderpane aan en voeg beide vbox & hbox samen.
+        // Main pane is created
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(vboxesCombined);
 
@@ -174,7 +174,7 @@ public class GUI extends Application {
 
         // CRUD (read) functionality...
         readButton.setOnAction(e -> {
-            // arraylist met alle cursist namen
+            // arraylist of cursist names
             ArrayList<String> cursistNames = cursistController.getAllCursists();
 
             items.setAll(cursistNames);
@@ -226,7 +226,6 @@ public class GUI extends Application {
         mainPane.setPadding(mainPanePadding);
         backToHomeButton.setPadding(buttonsMenuPadding);
 
-        // mainPane.setBottom(backToHomeButton);
         backToHomeButton.setOnAction(e -> {
             stage.setScene(homeScene);
             stage.show();
@@ -240,7 +239,8 @@ public class GUI extends Application {
         stage.setScene(homeScene);
         stage.setTitle("Cursist Management");
         stage.show();
-        // Create button op homepage
+
+        // Create button on homepage
         createButton.setOnAction(e -> {
             stage.setScene(mainScene);
             stage.show();
