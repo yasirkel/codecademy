@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -21,9 +19,8 @@ public class CourseGUI extends Application {
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
-    private DatabaseManager db = new DatabaseManager();
+    private DatabaseManagerCourse db = new DatabaseManagerCourse();
     private Button backToCodeCademy;
-    private Scene codeCademyHomeScene;
 
     public Scene courseScene(Stage stage) {
         GUI gui = new GUI();

@@ -1,41 +1,19 @@
-import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class GUI extends Application {
         private courseController courseController;
-        private CursistController cursistController;
-        private ListView<String> list;
-        private ObservableList<String> items;
-        private Scene mainScene;
-        private Scene homeScene;
-        private Button backHome;
-        private DatabaseManager db = new DatabaseManager();
-        private Button backToCodeCademy;
         private Scene codeCademyHomeScene;
         private Button cursistManagementButton;
         private Button courseManagementButton;
-        private CursistGUI cursistGUI;
 
         @Override
         public void start(Stage stage) {
@@ -159,6 +137,49 @@ public class GUI extends Application {
                         stage.setScene(courseGUI.courseScene(stage));
                         stage.show();
                 });
+
+                // // Webcast Manager Scene
+                // webcastManagementButton.setOnAction(e -> {
+                // WebcastGUI webcastGUI = new WebcastGUI(webcastController);
+                // stage.setScene(webcastGUI.webcastScene(stage));
+                // stage.show();
+                // });
+
+                // // Content Item Manager Scene
+                // contentItemManagementButton.setOnAction(e -> {
+                // ContentItemGUI contentItemGUI = new ContentItemGUI(contentItemController);
+                // stage.setScene(contentItemGUI.contentItemScene(stage));
+                // stage.show();
+                // });
+
+                // // Watched Content Manager Scene
+                // watchedContentManagementButton.setOnAction(e -> {
+                // WatchedContentGUI watchedContentGUI = new
+                // WatchedContentGUI(watchedContentController);
+                // stage.setScene(watchedContentGUI.watchedContentScene(stage));
+                // stage.show();
+                // });
+
+                // // Module Manager Scene
+                // moduleManagementButton.setOnAction(e -> {
+                // ModuleGUI moduleGUI = new ModuleGUI(moduleController);
+                // stage.setScene(moduleGUI.moduleScene(stage));
+                // stage.show();
+                // });
+
+                // // Enrollment Manager Scene
+                // enrollmentManagementButton.setOnAction(e -> {
+                // EnrollmentGUI enrollmentGUI = new EnrollmentGUI(enrollmentController);
+                // stage.setScene(enrollmentGUI.enrollmentScene(stage));
+                // stage.show();
+                // });
+
+                // // Certificate Manager Scene
+                // certificateManagementButton.setOnAction(e -> {
+                // CertificateGUI certificateGUI = new CertificateGUI(certificateController);
+                // stage.setScene(certificateGUI.certificateScene(stage));
+                // stage.show();
+                // });
 
                 return codeCademyHomeScene;
         }

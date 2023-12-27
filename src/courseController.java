@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class courseController {
-    private DatabaseManager databaseManager;
+    private DatabaseManagerCourse databaseManager;
 
     public courseController() {
-        this.databaseManager = new DatabaseManager();
+        this.databaseManager = new DatabaseManagerCourse();
     }
 
     public void addCourse(Course course) {

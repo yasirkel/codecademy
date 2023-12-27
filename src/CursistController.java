@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class CursistController {
-    private DatabaseManager databaseManager;
+    private DatabaseManagerCursist databaseManager;
 
     public CursistController() {
-        this.databaseManager = new DatabaseManager();
+        this.databaseManager = new DatabaseManagerCursist();
     }
 
     public void addCursist(Cursist cursist) {

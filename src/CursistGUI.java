@@ -21,7 +21,7 @@ public class CursistGUI extends Application {
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
-    private DatabaseManager db = new DatabaseManager();
+    private DatabaseManagerCursist db = new DatabaseManagerCursist();
     private Button backToCodeCademy;
     private BorderPane homePane;
 
