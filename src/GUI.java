@@ -11,8 +11,7 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
         private courseController courseController;
-        private CursistController cursistController;
-        private WebcastController webcastController;
+        private ModuleController moduleController;
         private Scene codeCademyHomeScene;
         private Button cursistManagementButton;
         private Button courseManagementButton;
@@ -162,12 +161,12 @@ public class GUI extends Application {
                 // stage.show();
                 // });
 
-                // // Module Manager Scene
-                // moduleManagementButton.setOnAction(e -> {
-                // ModuleGUI moduleGUI = new ModuleGUI(moduleController);
-                // stage.setScene(moduleGUI.moduleScene(stage));
-                // stage.show();
-                // });
+                // Module Manager Scene
+                moduleManagementButton.setOnAction(e -> {
+                        ModuleGUI moduleGUI = new ModuleGUI(moduleController);
+                        stage.setScene(moduleGUI.moduleScene(stage));
+                        stage.show();
+                });
 
                 // // Enrollment Manager Scene
                 // enrollmentManagementButton.setOnAction(e -> {
