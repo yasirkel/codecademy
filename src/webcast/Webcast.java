@@ -1,3 +1,5 @@
+package webcast;
+
 import java.time.LocalDate;
 
 public class Webcast {

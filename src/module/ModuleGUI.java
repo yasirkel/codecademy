@@ -1,16 +1,17 @@
+package module;
+
 import java.util.ArrayList;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.GUI;
 
 public class ModuleGUI {
     private ModuleController moduleController;
@@ -19,7 +20,6 @@ public class ModuleGUI {
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
-    private DatabaseManagerCursist db = new DatabaseManagerCursist();
     private Button backToCodeCademy;
     private BorderPane homePane;
 
@@ -45,7 +45,6 @@ public class ModuleGUI {
         welcomeLabel.setStyle("-fx-font-size: 24;");
         Button editButton = new Button("Edit Module");
         backToCodeCademy = new Button("< CodeCademy");
-
         backToCodeCademy.setOnAction(l -> {
             stage.setScene(gui.getHomeScene(stage));
             stage.show();
@@ -58,13 +57,13 @@ public class ModuleGUI {
         VBox homeLayout = new VBox(10, createButton, readButton, editButton, backToCodeCademy);
 
         createButton.setPrefSize(150, 50);
-        createButton.setStyle("-fx-font-size: 18");
+        createButton.setStyle("-fx-font-size: 18;");
         readButton.setPrefSize(150, 50);
-        readButton.setStyle("-fx-font-size: 18");
+        readButton.setStyle("-fx-font-size: 18;");
         editButton.setPrefSize(150, 50);
-        editButton.setStyle("-fx-font-size: 18");
+        editButton.setStyle("-fx-font-size: 18;");
         backToCodeCademy.setPrefSize(150, 50);
-        backToCodeCademy.setStyle("-fx-font-size: 18");
+        backToCodeCademy.setStyle("-fx-font-size: 18;");
 
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);

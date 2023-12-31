@@ -8,14 +8,14 @@
       "type": "java",
       "name": "CodeCademy",
       "request": "launch",
-      "mainClass": "CodeCademy",
+      "mainClass": "main.CodeCademy",
       "projectName": "CodeCademy_dcab69ce"
     },
     {
       "type": "java",
       "name": "GUI",
       "request": "launch",
-      "mainClass": "GUI",
+      "mainClass": "main.GUI",
       "projectName": "codecademy_a4514a6b"
     },
     {

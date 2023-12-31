@@ -1,3 +1,7 @@
+package cursist;
+
+import DatabaseManager.*;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,15 +17,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.GUI;
 
 public class CursistGUI extends Application {
+    private DatabaseManager db;
+    private Connection connection;
     private CursistController cursistController;
     private ListView<String> list;
     private ObservableList<String> items;
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
-    private DatabaseManagerCursist db = new DatabaseManagerCursist();
     private Button backToCodeCademy;
     private BorderPane homePane;
 
@@ -34,10 +40,14 @@ public class CursistGUI extends Application {
 
     // public scene to get the cursist scene
     public Scene cursistScene(Stage stage) {
+        db = new DatabaseManager();
+        connection = db.getConnection();
         cursistController = new CursistController();
 
         Button backToHomeButton = new Button("< Home");
+        backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
         backHome = new Button("< Home");
+        backHome.setStyle("-fx-background-color: #d2b48c;");
         backHome.setOnAction(k -> {
             stage.setScene(homeScene);
             stage.show();
@@ -66,13 +76,13 @@ public class CursistGUI extends Application {
         VBox homeLayout = new VBox(10, createButton, readButton, editButton, backToCodeCademy);
 
         createButton.setPrefSize(150, 50);
-        createButton.setStyle("-fx-font-size: 18");
+        createButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         readButton.setPrefSize(150, 50);
-        readButton.setStyle("-fx-font-size: 18");
+        readButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         editButton.setPrefSize(150, 50);
-        editButton.setStyle("-fx-font-size: 18");
+        editButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         backToCodeCademy.setPrefSize(150, 50);
-        backToCodeCademy.setStyle("-fx-font-size: 18");
+        backToCodeCademy.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
 
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);
@@ -103,6 +113,7 @@ public class CursistGUI extends Application {
         createCountryField.setPromptText("Country");
 
         Button addButton = new Button("Add Cursist ");
+        addButton.setStyle("-fx-background-color: #d2b48c;");
 
         addButton.setOnAction(f -> {
             try {
@@ -136,7 +147,7 @@ public class CursistGUI extends Application {
                 nieuweCursist.setCity(city);
                 nieuweCursist.setCountry(country);
 
-                cursistController.addCursist(nieuweCursist);
+                cursistController.saveCursist(nieuweCursist);
 
                 // Add alert pop-up that cursist has been added
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -160,6 +171,7 @@ public class CursistGUI extends Application {
                 alert.setHeaderText(null);
                 alert.setContentText("Failed to add cursist. Please check birthdate input");
                 alert.showAndWait();
+                e.printStackTrace();
             }
 
         });
@@ -180,7 +192,9 @@ public class CursistGUI extends Application {
                 10);
         addButton.setPadding(buttonsMenuPadding);
         deleteButton.setPadding(buttonsMenuPadding);
+        deleteButton.setStyle("-fx-background-color: #d2b48c;");
         updateButton.setPadding(buttonsMenuPadding);
+        updateButton.setStyle("-fx-background-color: #d2b48c;");
         backHome.setPadding(buttonsMenuPadding);
 
         buttonsMenu.setAlignment(Pos.CENTER);
@@ -200,7 +214,7 @@ public class CursistGUI extends Application {
         // CRUD (read) functionality...
         readButton.setOnAction(e -> {
             // arraylist of cursist names
-            ArrayList<String> cursistNames = cursistController.getAllCursists();
+            ArrayList<String> cursistNames = cursistController.getAllCursist();
 
             items.setAll(cursistNames);
             list.setItems(items);
@@ -216,7 +230,13 @@ public class CursistGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            // Create a button voor info
+            Button infoButton = new Button("More Info");
+            // style the button
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+            infoButton.setPadding(buttonsMenuPadding);
+
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -225,9 +245,53 @@ public class CursistGUI extends Application {
             BorderPane.setMargin(cursistPageButtons, new Insets(0, 0, 25, 0));
 
             mainScene = new Scene(cursistPage, 800, 600); // Assign mainScene here
-
+            mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            // Handle info button action
+            infoButton.setOnAction(f -> {
+                String selectedCursist = list.getSelectionModel().getSelectedItem();
+                Cursist selectedCursistForInfo = cursistController.getCursistByName(selectedCursist);
+
+                Label cursistInfoTitle = new Label("Cursist info:");
+                cursistInfoTitle.setStyle(
+                        "-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: #d2b48c; -fx-alignment: center; -fx-background-color: #f5f5dc; -fx-padding: 10px;");
+
+                Label cursistInfoName = new Label("Name: " + selectedCursistForInfo.getName());
+                Label cursistInfoEmail = new Label("Email: " + selectedCursistForInfo.getEmailAddress());
+                Label cursistInfoBirthdate = new Label("Birthdate: " + selectedCursistForInfo.getBirthDate());
+                Label cursistInfoGender = new Label("Gender: " + selectedCursistForInfo.getSex());
+                Label cursistInfoAddress = new Label("Address: " + selectedCursistForInfo.getAddress());
+                Label cursistInfoCity = new Label("City: " + selectedCursistForInfo.getCity());
+                Label cursistInfoCountry = new Label("Country: " + selectedCursistForInfo.getCountry());
+
+                // Create VBox for info
+                VBox vboxInfoTitle = new VBox(cursistInfoTitle);
+                vboxInfoTitle.setStyle(
+                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px;");
+
+                VBox vboxInfo = new VBox(cursistInfoName, cursistInfoEmail, cursistInfoBirthdate,
+                        cursistInfoGender,
+                        cursistInfoAddress, cursistInfoCity, cursistInfoCountry, backHome);
+                vboxInfo.setStyle(
+                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px; -fx-border-color: #d2b48c; -fx-border-width: 2px;");
+
+                VBox vboxInfoBackhome = new VBox(backHome);
+                vboxInfoBackhome.setStyle(
+                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px;");
+
+                BorderPane infoCursistPane = new BorderPane();
+                infoCursistPane.setTop(vboxInfoTitle);
+                infoCursistPane.setCenter(vboxInfo);
+                infoCursistPane.setBottom(vboxInfoBackhome);
+
+                Scene infoCursistScene = new Scene(infoCursistPane, 800, 600);
+                infoCursistScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
+                stage.setScene(infoCursistScene);
+                stage.show();
+            });
+
         });
 
         // Handle delete button action
@@ -266,6 +330,7 @@ public class CursistGUI extends Application {
 
         // Create button on homepage
         createButton.setOnAction(e -> {
+            mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
 
@@ -278,6 +343,7 @@ public class CursistGUI extends Application {
             title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
             chooseButton.setPadding(buttonsMenuPadding);
+            chooseButton.setStyle("-fx-background-color: #d2b48c;");
 
             // Use the class-level backHome variable
             HBox buttonsEdit = new HBox(chooseButton, backHome);
@@ -285,7 +351,7 @@ public class CursistGUI extends Application {
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
-            ArrayList<String> cursistNames = cursistController.getAllCursists();
+            ArrayList<String> cursistNames = cursistController.getAllCursist();
 
             items.setAll(cursistNames);
             list.setItems(items);
@@ -300,6 +366,7 @@ public class CursistGUI extends Application {
             BorderPane.setMargin(list, new Insets(25));
 
             Scene updateScene = new Scene(editPane, 800, 600);
+            updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(updateScene);
             stage.show();
             TextField updateNaamField = new TextField();
@@ -317,14 +384,15 @@ public class CursistGUI extends Application {
                 editWindowTitle.setStyle("-fx-font-size: 30;");
                 Button confirmButton = new Button("Confirm");
                 confirmButton.setPadding(buttonsMenuPadding);
+                confirmButton.setStyle("-fx-background-color: #d2b48c;");
 
                 HBox editButtons = new HBox(backHome, confirmButton);
 
                 String selectedCursistName = list.getSelectionModel().getSelectedItem();
-                Cursist selectedCursist = db.getCursistByName(selectedCursistName);
+                Cursist selectedCursist = cursistController.getCursistByName(selectedCursistName);
 
                 updateNaamField.setText(selectedCursist.getName());
-                updateEmailField.setText(selectedCursist.getEmailAddress() + " (EmailAddress cannot be changed)");
+                updateEmailField.setText(selectedCursist.getEmailAddress());
                 updateBirthDateField.setText(selectedCursist.getBirthDate().toString());
                 genderChoiceBox.getSelectionModel().selectFirst();
                 updateAddressField.setText(selectedCursist.getAddress());
@@ -346,17 +414,19 @@ public class CursistGUI extends Application {
                 BorderPane.setMargin(updateFields, new Insets(25));
 
                 Scene confirmEdit = new Scene(editWindow, 800, 600);
+                confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 stage.setScene(confirmEdit);
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
+                    // Get the selected cursist
                     selectedCursist.setEmailAddress(updateEmailField.getText());
                     selectedCursist.setName(updateNaamField.getText());
                     selectedCursist.setCity(updateCityField.getText());
                     selectedCursist.setCountry(updateCountryField.getText());
                     selectedCursist.setAddress(updateAddressField.getText());
 
-                    db.updateCursistFields(selectedCursist);
+                    cursistController.updateCursistFields(selectedCursist);
 
                     Alert alert = new Alert(AlertType.INFORMATION);
 
@@ -369,10 +439,36 @@ public class CursistGUI extends Application {
 
                     // Show the alert
                     alert.showAndWait();
+
+                    // Clear all textfield
+                    // updateNaamField.clear();
+                    // updateEmailField.clear();
+                    // updateBirthDateField.clear();
+                    // updateAddressField.clear();
+                    // updateCityField.clear();
+                    // updateCountryField.clear();
+
+                    // // set prompt text back for textfields
+                    // updateNaamField.setPromptText("Name");
+                    // updateEmailField.setPromptText("EmailAddress");
+                    // updateBirthDateField.setPromptText("BirthDate");
+                    // updateAddressField.setPromptText("Address");
+                    // updateCityField.setPromptText("City");
+                    // updateCountryField.setPromptText("Country");
+
+                    // // set the textfield to disable
+                    // updateNaamField.setDisable(true);
+                    // updateEmailField.setDisable(true);
+                    // updateBirthDateField.setDisable(true);
+                    // updateAddressField.setDisable(true);
+                    // updateCityField.setDisable(true);
+                    // updateCountryField.setDisable(true);
+
                 });
 
             });
         });
+        homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
         return homeScene;
     }
 

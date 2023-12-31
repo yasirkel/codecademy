@@ -1,12 +1,15 @@
+package module;
+
+import DatabaseManager.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ModuleController {
-    private DatabaseManagerCourse databaseManager;
+    private DatabaseManager databaseManager;
 
     public ModuleController() {
-        this.databaseManager = new DatabaseManagerCourse();
+        this.databaseManager = new DatabaseManager();
     }
 
     public ArrayList<String> getAllModules() {

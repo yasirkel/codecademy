@@ -1,3 +1,5 @@
+package cursist;
+
 import java.time.LocalDate;
 
 public class Cursist {
@@ -34,7 +36,7 @@ public class Cursist {
         this.birthDate = birthDate;
     }
 
-    public String isSex() {
+    public String getSex() {
         return sex;
     }
 

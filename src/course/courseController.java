@@ -1,26 +1,25 @@
+package course;
+
+import DatabaseManager.*;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DatabaseManagerCourse {
+public class courseController {
+    private DatabaseManager databaseManager;
     private Connection connection;
 
-    public DatabaseManagerCourse() {
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost;databaseName=CodeCademy;username=admin;password=admin123;integratedSecurity=false;encrypt=true;trustServerCertificate=true;");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+    public courseController() {
+        this.databaseManager = new DatabaseManager();
     }
 
     public ResultSet query(String sqlQuery) {
         try {
+            connection = databaseManager.getConnection();
             Statement stmt = connection.createStatement();
             return stmt.executeQuery(sqlQuery);
         } catch (SQLException e) {
@@ -118,4 +117,5 @@ public class DatabaseManagerCourse {
             e.printStackTrace();
         }
     }
+
 }

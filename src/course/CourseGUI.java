@@ -1,11 +1,7 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+package course;
+
+import main.*;
 import java.util.ArrayList;
-
-import javax.swing.text.DateFormatter;
-
-import org.xml.sax.Parser;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,21 +15,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class WebcastGUI extends Application {
-    private WebcastController webcastController;
+public class CourseGUI extends Application {
+    private courseController courseController;
     private ListView<String> list;
     private ObservableList<String> items;
     private Scene mainScene;
     private Scene homeScene;
     private Button backHome;
-    private DatabaseManagerWebcast db = new DatabaseManagerWebcast();
     private Button backToCodeCademy;
 
-    public Scene webcastScene(Stage stage) {
+    public Scene courseScene(Stage stage) {
         GUI gui = new GUI();
-        webcastController = new WebcastController();
+        courseController = new courseController();
 
         Button backToHomeButton = new Button("< Home");
+        backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
         backHome = new Button("< Home");
         backHome.setOnAction(j -> {
             stage.setScene(homeScene);
@@ -41,21 +37,22 @@ public class WebcastGUI extends Application {
         });
 
         // Create a welcome message for the homepage
-        Button createButton = new Button("Create webcast");
-        Button readButton = new Button("All webcasts");
-        Label welcomeLabel = new Label("Welcome to webcast management");
+        Button createButton = new Button("Create Course");
+        Button readButton = new Button("All Courses");
+        Label welcomeLabel = new Label("Welcome to course management");
 
         Insets welcomeLabelPadding = new Insets(25);
         welcomeLabel.setPadding(welcomeLabelPadding);
         welcomeLabel.setStyle("-fx-font-size: 24;");
-        Button editButton = new Button("Edit webcast");
+        Button editButton = new Button("Edit Course");
         backToCodeCademy = new Button("< CodeCademy");
+
         backToCodeCademy.setOnAction(l -> {
             stage.setScene(gui.getHomeScene(stage));
             stage.show();
         });
         backToCodeCademy.setPrefSize(150, 50);
-        backToCodeCademy.setStyle("-fx-font-size: 18");
+        backToCodeCademy.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
 
         // Create layout for the homepage
         BorderPane homePane = new BorderPane();
@@ -64,11 +61,11 @@ public class WebcastGUI extends Application {
         VBox homeLayout = new VBox(10, createButton, readButton, editButton, backToCodeCademy);
 
         createButton.setPrefSize(150, 50);
-        createButton.setStyle("-fx-font-size: 18");
+        createButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         readButton.setPrefSize(150, 50);
-        readButton.setStyle("-fx-font-size: 18");
+        readButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         editButton.setPrefSize(150, 50);
-        editButton.setStyle("-fx-font-size: 18");
+        editButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
 
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);
@@ -76,85 +73,80 @@ public class WebcastGUI extends Application {
         homePane.setPadding(padding);
         homeScene = new Scene(homePane, 800, 600);
 
-        TextField createTitleField = new TextField();
-        createTitleField.setPromptText("Title");
+        TextField createNaamField = new TextField();
+        createNaamField.setPromptText("Naam");
 
-        TextField createLengthField = new TextField();
-        createLengthField.setPromptText("Length of webcast (in minutes)");
+        TextField createSubjectField = new TextField();
+        createSubjectField.setPromptText("Subject");
 
-        TextField createDateField = new TextField();
-        createDateField.setPromptText("Date of publication (DD-MM-YYYY)");
+        TextField createIntroductionText = new TextField();
+        createIntroductionText.setPromptText("Introduction Text");
 
-        TextField createURLField = new TextField();
-        createURLField.setPromptText("URL");
+        TextField createDifficultyLevel = new TextField();
+        createDifficultyLevel.setPromptText("Difficulty Level");
 
-        TextField createNameSpeakerField = new TextField();
-        createNameSpeakerField.setPromptText("Name of speaker");
+        TextField createCourseId = new TextField();
+        createCourseId.setPromptText("CourseId");
 
-        TextField createOrganisationSpeakerField = new TextField();
-        createOrganisationSpeakerField.setPromptText("Organisation of speaker");
+        TextField createModuleId = new TextField();
+        createModuleId.setPromptText("ModuleId");
 
-        TextField createContentItemIDField = new TextField();
-        createContentItemIDField.setPromptText("Content item ID");
-
-        Button addButton = new Button("Add Webcast");
+        Button addButton = new Button("Add Course");
+        addButton.setStyle("-fx-background-color: #d2b48c;");
 
         addButton.setOnAction(f -> {
 
-            if (createTitleField.getText().isBlank()) {
+            if (createNaamField.getText().isBlank()) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Title cannot be empty.");
+                alert.setContentText("Name cannot be empty.");
                 alert.showAndWait();
                 return;
             }
 
-            String title = createTitleField.getText();
-            String length = createLengthField.getText();
-            int lengthWebcast = Integer.valueOf(length);
-            String date = createDateField.getText();
-            String url = createURLField.getText();
-            String nameSpeaker = createNameSpeakerField.getText();
-            String organisationSpeaker = createOrganisationSpeakerField.getText();
-            String contentItemIDString = createContentItemIDField.getText();
-            int contentItemID = Integer.valueOf(contentItemIDString);
+            String naam = createNaamField.getText();
+            String subject = createSubjectField.getText();
+            String introductionText = createIntroductionText.getText();
+            int difficultyLevel = Integer.valueOf(createDifficultyLevel.getText());
+            int courseId = Integer.valueOf(createCourseId.getText());
+            int moduleId = Integer.valueOf(createModuleId.getText());
 
-            Webcast newWebcast = new Webcast();
-            newWebcast.setTitleWebcast(title);
-            newWebcast.setLengthWebcast(lengthWebcast);
-            newWebcast.setDatePublication(date);
-            newWebcast.setURL(url);
-            newWebcast.setNameSpeaker(nameSpeaker);
-            newWebcast.setOrganisationSpeaker(organisationSpeaker);
-            newWebcast.setContentItemID(contentItemID);
+            Course newCourse = new Course();
+            newCourse.setName(naam);
+            newCourse.setSubject(subject);
+            newCourse.setIntroductionText(introductionText);
+            newCourse.setDifficultyLevel(difficultyLevel);
+            newCourse.setCourseId(courseId);
+            newCourse.setModuleId(moduleId);
 
-            webcastController.addWebcast(newWebcast);
+            courseController.saveCourse(newCourse);
 
             // Show alert after adding a course
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(null);
-            alert.setContentText("Webcast added successfully.");
+            alert.setContentText("Course added successfully.");
             alert.showAndWait();
 
             // Clear the input fields after adding a course
-            createTitleField.clear();
-            createLengthField.clear();
-            createContentItemIDField.clear();
-            createURLField.clear();
-            createNameSpeakerField.clear();
-            createOrganisationSpeakerField.clear();
-            createDateField.clear();
+            createNaamField.clear();
+            createSubjectField.clear();
+            createIntroductionText.clear();
+            createDifficultyLevel.clear();
+            createCourseId.clear();
+            createModuleId.clear();
+
         });
 
-        VBox createFields = new VBox(createTitleField, createLengthField, createDateField, createURLField,
-                createNameSpeakerField, createOrganisationSpeakerField, createContentItemIDField, addButton);
+        VBox createFields = new VBox(createNaamField, createSubjectField, createIntroductionText,
+                createDifficultyLevel,
+                createCourseId, createModuleId, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
-        Button updateButton = new Button("Update Webcast");
+        Button updateButton = new Button("Update Course");
 
         // Create layout for buttons
         HBox buttonsMenu = new HBox(addButton, backToHomeButton);
@@ -162,8 +154,10 @@ public class WebcastGUI extends Application {
         Insets buttonsMenuPadding = new Insets(10);
         addButton.setPadding(buttonsMenuPadding);
         deleteButton.setPadding(buttonsMenuPadding);
+        deleteButton.setStyle("-fx-background-color: #d2b48c;");
         updateButton.setPadding(buttonsMenuPadding);
         backHome.setPadding(buttonsMenuPadding);
+        backHome.setStyle("-fx-background-color: #d2b48c;");
 
         buttonsMenu.setAlignment(Pos.CENTER);
         buttonsMenu.setSpacing(5);
@@ -182,22 +176,22 @@ public class WebcastGUI extends Application {
         // CRUD (read) functionality...
         readButton.setOnAction(g -> {
             // arraylist with all course names
-            ArrayList<String> webcastTitles = webcastController.getAllWebcasts();
+            ArrayList<String> courseNames = courseController.getAllCourses();
 
-            items.setAll(webcastTitles);
+            items.setAll(courseNames);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
-            BorderPane webcastPage = new BorderPane();
+            BorderPane cursistPage = new BorderPane();
 
-            webcastPage.setCenter(list);
+            cursistPage.setCenter(list);
             BorderPane.setMargin(list, new Insets(25));
 
-            Label webcastPageTitle = new Label("Overview all webcasts");
-            webcastPageTitle.setStyle("-fx-font-size: 30;");
-            BorderPane.setAlignment(webcastPageTitle, Pos.CENTER);
-            webcastPage.setTop(webcastPageTitle);
+            Label cursistPageTitle = new Label("Overview all courses");
+            cursistPageTitle.setStyle("-fx-font-size: 30;");
+            BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
+            cursistPage.setTop(cursistPageTitle);
 
             HBox cursistPageButtons = new HBox(deleteButton, backHome);
             cursistPageButtons.setSpacing(10);
@@ -205,11 +199,12 @@ public class WebcastGUI extends Application {
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
             cursistPageButtons.setAlignment(Pos.CENTER);
             BorderPane.setMargin(cursistPageButtons, new Insets(0, 0, 25, 0));
-            webcastPage.setBottom(cursistPageButtons);
+            cursistPage.setBottom(cursistPageButtons);
 
-            mainScene = new Scene(webcastPage, 800, 600); // Assign mainScene here
+            mainScene = new Scene(cursistPage, 800, 600); // Assign mainScene here
 
-            stage.setTitle("Webcast overview");
+            stage.setTitle("Course overview");
+            mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
 
@@ -217,15 +212,15 @@ public class WebcastGUI extends Application {
 
         // Handle delete button action
         deleteButton.setOnAction(h -> {
-            String selectedWebcast = list.getSelectionModel().getSelectedItem();
+            String selectedCourse = list.getSelectionModel().getSelectedItem();
 
-            if (selectedWebcast != null) {
-                webcastController.deleteWebcast(selectedWebcast);
-                items.remove(selectedWebcast);
+            if (selectedCourse != null) {
+                courseController.deleteCourse(selectedCourse);
+                items.remove(selectedCourse);
             }
         });
 
-        Label mainSceneTitle = new Label("Create a new webcast");
+        Label mainSceneTitle = new Label("Create a new course");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
         mainSceneTitle.setPadding(mainSceneTitlePadding);
@@ -242,26 +237,29 @@ public class WebcastGUI extends Application {
         });
 
         Scene mainScene = new Scene(mainPane, 800, 600);
-        stage.setTitle("Webcast Management");
+        stage.setTitle("Course Management");
         stage.setScene(mainScene);
         stage.show();
 
         stage.setScene(homeScene);
-        stage.setTitle("Webcast Management");
+        stage.setTitle("Course Management");
         stage.show();
         // Create button op homepage
         createButton.setOnAction(j -> {
+            mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
         });
 
         editButton.setOnAction(k -> {
             BorderPane editPane = new BorderPane();
-            Label title = new Label("Choose webcast to edit");
+            Label title = new Label("Choose course to edit");
             BorderPane.setAlignment(title, Pos.TOP_CENTER);
             title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
             chooseButton.setPadding(buttonsMenuPadding);
+            chooseButton.setStyle("-fx-background-color: #d2b48c;");
 
             // Use the class-level backHome variable
             HBox buttonsEdit = new HBox(chooseButton, backHome);
@@ -269,9 +267,9 @@ public class WebcastGUI extends Application {
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
-            ArrayList<String> webcastNames = webcastController.getAllWebcasts();
+            ArrayList<String> courseNames = courseController.getAllCourses();
 
-            items.setAll(webcastNames);
+            items.setAll(courseNames);
             list.setItems(items);
 
             editPane.setBottom(buttonsEdit);
@@ -284,16 +282,16 @@ public class WebcastGUI extends Application {
             BorderPane.setMargin(list, new Insets(25));
 
             Scene updateScene = new Scene(editPane, 800, 600);
+            updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(updateScene);
             stage.show();
-            TextField updateTitleField = new TextField();
-            updateTitleField.setDisable(true);
-            TextField updateLengthField = new TextField();
-            TextField updateDateField = new TextField();
-            TextField updateLinkField = new TextField();
-            TextField updateNameSpeakerField = new TextField();
-            TextField updateOrganisationSpeakerField = new TextField();
-            TextField updateContentItemIdField = new TextField();
+            TextField updateNaamField = new TextField();
+            updateNaamField.setDisable(true);
+            TextField updateSubjectField = new TextField();
+            TextField updateIntroductionText = new TextField();
+            TextField updateDifficultyLevel = new TextField();
+            TextField updateCourseId = new TextField();
+            TextField updateModuleId = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -301,22 +299,24 @@ public class WebcastGUI extends Application {
                 editWindowTitle.setStyle("-fx-font-size: 30;");
                 Button confirmButton = new Button("Confirm");
                 confirmButton.setPadding(buttonsMenuPadding);
+                confirmButton.setStyle("-fx-background-color: #d2b48c;");
 
                 HBox editButtons = new HBox(backHome, confirmButton);
 
-                String selectedWebcastName = list.getSelectionModel().getSelectedItem();
-                Webcast selectedWebcast = db.getWebcastByName(selectedWebcastName);
+                String selectedCourseName = list.getSelectionModel().getSelectedItem();
+                Course selectedCourse = courseController.getCourseByName(selectedCourseName);
 
-                updateTitleField.setText(selectedWebcast.getTitleWebcast() + " (Title cannot be changed)");
-                updateLengthField.setText(String.valueOf(selectedWebcast.getLengthWebcast()));
-                updateDateField.setText(selectedWebcast.getDatePublication().toString());
-                updateLinkField.setText(selectedWebcast.getURL());
-                updateNameSpeakerField.setText(selectedWebcast.getNameSpeaker());
-                updateOrganisationSpeakerField.setText(selectedWebcast.getOrganisationSpeaker());
-                updateContentItemIdField.setText(String.valueOf(selectedWebcast.getContentItemID()));
+                updateNaamField.setText(selectedCourse.getName());
+                updateSubjectField.setText(selectedCourse.getSubject());
+                updateIntroductionText.setText(selectedCourse.getIntroductionText());
+                updateDifficultyLevel
+                        .setText(String.valueOf(selectedCourse.getDifficultyLevel()));
+                updateCourseId.setText(String.valueOf(selectedCourse.getCourseId()));
+                updateModuleId.setText(String.valueOf(selectedCourse.getModuleId()));
 
-                VBox updateFields = new VBox(updateTitleField, updateLengthField, updateDateField, updateLinkField,
-                        updateNameSpeakerField, updateOrganisationSpeakerField, updateContentItemIdField);
+                VBox updateFields = new VBox(updateNaamField, updateSubjectField,
+                        updateIntroductionText,
+                        updateDifficultyLevel, updateCourseId, updateModuleId);
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
@@ -329,34 +329,37 @@ public class WebcastGUI extends Application {
                 BorderPane.setMargin(updateFields, new Insets(25));
 
                 Scene confirmEdit = new Scene(editWindow, 800, 600);
+                confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 stage.setScene(confirmEdit);
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
-                    selectedWebcast.setTitleWebcast(updateTitleField.getText());
-                    selectedWebcast.setLengthWebcast(Integer.parseInt(updateLengthField.getText()));
-                    selectedWebcast.setDatePublication(updateDateField.getText());
-                    selectedWebcast.setURL(updateLinkField.getText());
-                    selectedWebcast.setNameSpeaker(updateNameSpeakerField.getText());
-                    selectedWebcast.setOrganisationSpeaker(updateOrganisationSpeakerField.getText());
-                    selectedWebcast.setContentItemID(Integer.parseInt(updateContentItemIdField.getText()));
+                    selectedCourse.setName(updateNaamField.getText());
+                    selectedCourse.setSubject(updateSubjectField.getText());
+                    selectedCourse.setIntroductionText(updateIntroductionText.getText());
+                    selectedCourse.setDifficultyLevel(
+                            Integer.parseInt(updateDifficultyLevel.getText()));
+                    selectedCourse.setCourseId(Integer.parseInt(updateCourseId.getText()));
+                    selectedCourse.setModuleId(Integer.parseInt(updateModuleId.getText()));
 
-                    db.updatewebcastFields(selectedWebcast);
+                    courseController.updateCourseFields(selectedCourse);
 
                     // Add alert pop-up that course has been edited
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Webcast edited");
+                    alert.setTitle("Course edited");
                     alert.setHeaderText(null);
-                    alert.setContentText("Webcast has been edited successfully!");
+                    alert.setContentText("Course has been edited successfully!");
                     alert.showAndWait();
 
                 });
             });
         });
+
+        homeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
         return homeScene;
     }
 
-    public WebcastGUI(Webcast webcast) {
+    public CourseGUI(courseController courseController) {
     }
 
     @Override

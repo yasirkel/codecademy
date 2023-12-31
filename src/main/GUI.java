@@ -1,3 +1,9 @@
+package main;
+
+import course.*;
+import cursist.*;
+import webcast.*;
+import module.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,6 +21,7 @@ public class GUI extends Application {
         private Scene codeCademyHomeScene;
         private Button cursistManagementButton;
         private Button courseManagementButton;
+        private CursistController cursistController;
 
         @Override
         public void start(Stage stage) {
@@ -127,7 +134,7 @@ public class GUI extends Application {
 
                 // Cursist Manager Scene
                 cursistManagementButton.setOnAction(j -> {
-                        CursistGUI cursistGui = new CursistGUI(new CursistController());
+                        CursistGUI cursistGui = new CursistGUI(cursistController);
                         stage.setScene(cursistGui.cursistScene(stage));
                         stage.show();
                 });
@@ -181,6 +188,18 @@ public class GUI extends Application {
                 // stage.setScene(certificateGUI.certificateScene(stage));
                 // stage.show();
                 // });
+
+                String buttonStyle = "-fx-background-color: #d2b48c;";
+                cursistManagementButton.setStyle(buttonStyle);
+                courseManagementButton.setStyle(buttonStyle);
+                webcastManagementButton.setStyle(buttonStyle);
+                contentItemManagementButton.setStyle(buttonStyle);
+                watchedContentManagementButton.setStyle(buttonStyle);
+                moduleManagementButton.setStyle(buttonStyle);
+                enrollmentManagementButton.setStyle(buttonStyle);
+                certificateManagementButton.setStyle(buttonStyle);
+
+                codeCademyHomeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
 
                 return codeCademyHomeScene;
         }

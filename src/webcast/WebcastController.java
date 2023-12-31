@@ -1,3 +1,6 @@
+package webcast;
+
+import DatabaseManager.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -6,27 +9,42 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class DatabaseManagerWebcast {
+public class WebcastController {
+    private DatabaseManager databaseManager;
     private Connection connection;
 
-    public DatabaseManagerWebcast() {
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:sqlserver://localhost;databaseName=CodeCademy;username=admin;password=admin123;integratedSecurity=false;encrypt=true;trustServerCertificate=true;");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+    public WebcastController() {
+        this.databaseManager = new DatabaseManager();
     }
 
     public ResultSet query(String sqlQuery) {
         try {
+            connection = databaseManager.getConnection();
             Statement stmt = connection.createStatement();
             return stmt.executeQuery(sqlQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void addWebcast(Webcast webcast) {
+        try {
+            String query = "INSERT INTO Webcast (TitleWebcast, LengthWebcast, DatePublication, URL, NameSpeaker, OrganisationSpeaker, ContentItemID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, webcast.getTitleWebcast());
+                statement.setString(2, String.valueOf(webcast.getLengthWebcast()));
+                statement.setString(3, webcast.getDatePublication());
+                statement.setString(4, webcast.getURL());
+                statement.setString(5, webcast.getNameSpeaker());
+                statement.setString(6, webcast.getOrganisationSpeaker());
+                statement.setString(7, String.valueOf(webcast.getContentItemID()));
+
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getAllWebcasts() {
@@ -44,25 +62,6 @@ public class DatabaseManagerWebcast {
         }
 
         return webcastNames;
-    }
-
-    public void saveWebcast(Webcast webcast) {
-        try {
-            String query = "INSERT INTO Webcast (TitleWebcast, LengthWebcast, DatePublication, URL, NameSpeaker, OrganisationSpeaker, ContentItemID) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, webcast.getTitleWebcast());
-                statement.setString(2, String.valueOf(webcast.getLengthWebcast()));
-                statement.setString(3, webcast.getDatePublication());
-                statement.setString(4, webcast.getURL());
-                statement.setString(5, webcast.getNameSpeaker());
-                statement.setString(6, webcast.getOrganisationSpeaker());
-                statement.setString(7, String.valueOf(webcast.getContentItemID()));
-
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public void deleteWebcast(String titleWebcast) {
@@ -103,6 +102,7 @@ public class DatabaseManagerWebcast {
     }
 
     public void updatewebcastFields(Webcast webcast) {
+        connection = databaseManager.getConnection();
         String query = "UPDATE Webcast SET LengthWebcast = ?, DatePublication = ?, URL = ?, NameSpeaker = ?, OrganisationSpeaker = ?, ContentItemID = ? WHERE TitleWebcast = ?";
         try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
             updateStatement.setInt(1, webcast.getLengthWebcast());
@@ -119,4 +119,5 @@ public class DatabaseManagerWebcast {
             e.printStackTrace();
         }
     }
+
 }
