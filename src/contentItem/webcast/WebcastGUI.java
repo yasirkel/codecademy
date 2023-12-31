@@ -3,7 +3,12 @@ package webcast;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import DatabaseManager.*;
+import contentItem.ContentItem;
+import contentItem.contentItemController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +24,7 @@ import javafx.stage.Stage;
 import main.GUI;
 
 public class WebcastGUI extends Application {
+    private ContentItem contentItem;
     private WebcastController webcastController;
     private ListView<String> list;
     private ObservableList<String> items;
@@ -84,8 +90,8 @@ public class WebcastGUI extends Application {
         TextField createLengthField = new TextField();
         createLengthField.setPromptText("Length of webcast (in minutes)");
 
-        TextField createDateField = new TextField();
-        createDateField.setPromptText("Date of publication (DD-MM-YYYY)");
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPromptText("Date of publication");
 
         TextField createURLField = new TextField();
         createURLField.setPromptText("URL");
@@ -98,6 +104,9 @@ public class WebcastGUI extends Application {
 
         TextField createContentItemIDField = new TextField();
         createContentItemIDField.setPromptText("Content item ID");
+
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.setPromptText("Choose contentItemID");
 
         Button addButton = new Button("Add Webcast");
         addButton.setStyle("-fx-background-color: #d2b48c;");
@@ -116,11 +125,13 @@ public class WebcastGUI extends Application {
             String title = createTitleField.getText();
             String length = createLengthField.getText();
             int lengthWebcast = Integer.valueOf(length);
-            String date = createDateField.getText();
+            LocalDate date = datePicker.getValue();
+
             String url = createURLField.getText();
             String nameSpeaker = createNameSpeakerField.getText();
             String organisationSpeaker = createOrganisationSpeakerField.getText();
-            String contentItemIDString = createContentItemIDField.getText();
+            String contentItemIDString = comboBox.getValue();
+
             int contentItemID = Integer.valueOf(contentItemIDString);
 
             Webcast newWebcast = new Webcast();
@@ -148,11 +159,11 @@ public class WebcastGUI extends Application {
             createURLField.clear();
             createNameSpeakerField.clear();
             createOrganisationSpeakerField.clear();
-            createDateField.clear();
+
         });
 
-        VBox createFields = new VBox(createTitleField, createLengthField, createDateField, createURLField,
-                createNameSpeakerField, createOrganisationSpeakerField, createContentItemIDField, addButton);
+        VBox createFields = new VBox(createTitleField, createLengthField, datePicker, createURLField,
+                createNameSpeakerField, createOrganisationSpeakerField, comboBox, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
@@ -346,7 +357,8 @@ public class WebcastGUI extends Application {
                 confirmButton.setOnAction(g -> {
                     selectedWebcast.setTitleWebcast(updateTitleField.getText());
                     selectedWebcast.setLengthWebcast(Integer.parseInt(updateLengthField.getText()));
-                    selectedWebcast.setDatePublication(updateDateField.getText());
+                    LocalDate date = LocalDate.parse(updateDateField.getText());
+                    selectedWebcast.setDatePublication(date);
                     selectedWebcast.setURL(updateLinkField.getText());
                     selectedWebcast.setNameSpeaker(updateNameSpeakerField.getText());
                     selectedWebcast.setOrganisationSpeaker(updateOrganisationSpeakerField.getText());

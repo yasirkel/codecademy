@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.GUI;
 
-public class ModuleGUI {
+public class ModuleGUI extends contentItem.ContentItem {
     private ModuleController moduleController;
     private ListView<String> list;
     private ObservableList<String> items;

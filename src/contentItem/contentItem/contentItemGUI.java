@@ -1,6 +1,8 @@
-package course;
+package contentItem;
 
 import main.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -15,8 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CourseGUI extends Application {
-    private courseController courseController;
+public class contentItemGUI extends Application {
+    private contentItemController contentItemController;
     private ListView<String> list;
     private ObservableList<String> items;
     private Scene mainScene;
@@ -24,9 +26,9 @@ public class CourseGUI extends Application {
     private Button backHome;
     private Button backToCodeCademy;
 
-    public Scene courseScene(Stage stage) {
+    public Scene contentItemScene(Stage stage) {
         GUI gui = new GUI();
-        courseController = new courseController();
+        contentItemController = new contentItemController();
 
         Button backToHomeButton = new Button("< Home");
         backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
@@ -37,14 +39,14 @@ public class CourseGUI extends Application {
         });
 
         // Create a welcome message for the homepage
-        Button createButton = new Button("Create Course");
-        Button readButton = new Button("All Courses");
-        Label welcomeLabel = new Label("Welcome to course management");
+        Button createButton = new Button("Create Content");
+        Button readButton = new Button("All Content");
+        Label welcomeLabel = new Label("Welcome to Content Item management");
 
         Insets welcomeLabelPadding = new Insets(25);
         welcomeLabel.setPadding(welcomeLabelPadding);
         welcomeLabel.setStyle("-fx-font-size: 24;");
-        Button editButton = new Button("Edit Course");
+        Button editButton = new Button("Edit Content");
         backToCodeCademy = new Button("< CodeCademy");
 
         backToCodeCademy.setOnAction(l -> {
@@ -73,79 +75,60 @@ public class CourseGUI extends Application {
         homePane.setPadding(padding);
         homeScene = new Scene(homePane, 800, 600);
 
-        TextField createNaamField = new TextField();
-        createNaamField.setPromptText("Naam");
+        TextField createIdField = new TextField();
+        createIdField.setPromptText("Content Item ID");
 
-        TextField createSubjectField = new TextField();
-        createSubjectField.setPromptText("Subject");
+        DatePicker createDateField = new DatePicker();
+        createDateField.setPromptText("Publication Date");
 
-        TextField createIntroductionText = new TextField();
-        createIntroductionText.setPromptText("Introduction Text");
+        TextField createStatusField = new TextField();
+        createStatusField.setPromptText("Status");
 
-        TextField createDifficultyLevel = new TextField();
-        createDifficultyLevel.setPromptText("Difficulty Level");
-
-        TextField createCourseId = new TextField();
-        createCourseId.setPromptText("CourseId");
-
-        ComboBox createModuleId = new ComboBox();
-        createModuleId.setPromptText("Choose ModuleId");
-
-        Button addButton = new Button("Add Course");
+        Button addButton = new Button("Add Content Item");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
         addButton.setOnAction(f -> {
 
-            if (createNaamField.getText().isBlank()) {
+            if (createIdField.getText().isBlank()) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
-                alert.setContentText("Name cannot be empty.");
+                alert.setContentText("ContentItem ID cannot be empty.");
                 alert.showAndWait();
                 return;
             }
 
-            String naam = createNaamField.getText();
-            String subject = createSubjectField.getText();
-            String introductionText = createIntroductionText.getText();
-            int difficultyLevel = Integer.valueOf(createDifficultyLevel.getText());
-            int courseId = Integer.valueOf(createCourseId.getText());
-            int moduleId = Integer.valueOf(createModuleId.getValue().toString());
+            int contentItemID = Integer.parseInt(createIdField.getText());
+            LocalDate date = createDateField.getValue();
+            String status = createStatusField.getText();
 
-            Course newCourse = new Course();
-            newCourse.setName(naam);
-            newCourse.setSubject(subject);
-            newCourse.setIntroductionText(introductionText);
-            newCourse.setDifficultyLevel(difficultyLevel);
-            newCourse.setCourseId(courseId);
-            newCourse.setModuleId(moduleId);
+            ContentItem contentItem = new ContentItem();
+            contentItem.setContentItemID(contentItemID);
+            contentItem.setPublicationDate(date);
+            contentItem.setStatus(status);
 
-            courseController.saveCourse(newCourse);
+            contentItemController.addContentItem(contentItem);
 
-            // Show alert after adding a course
+            // Show alert after adding a contentitem
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText(null);
-            alert.setContentText("Course added successfully.");
+            alert.setContentText("Content Item added successfully.");
             alert.showAndWait();
 
-            // Clear the input fields after adding a course
-            createNaamField.clear();
-            createSubjectField.clear();
-            createIntroductionText.clear();
-            createDifficultyLevel.clear();
-            createCourseId.clear();
-            createModuleId.setValue(null);
+            // Clear the input fields after adding a contentitem
+            createIdField.clear();
+            createDateField.setValue(null);
+            createStatusField.clear();
+
         });
 
-        VBox createFields = new VBox(createNaamField, createSubjectField, createIntroductionText,
-                createDifficultyLevel,
-                createCourseId, createModuleId, addButton);
+        VBox createFields = new VBox(createIdField, createDateField, createStatusField, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created
         Button deleteButton = new Button("Delete");
-        Button updateButton = new Button("Update Course");
+        Button updateButton = new Button("Update Content Item");
 
         // Create layout for buttons
         HBox buttonsMenu = new HBox(addButton, backToHomeButton);
@@ -174,10 +157,10 @@ public class CourseGUI extends Application {
 
         // CRUD (read) functionality...
         readButton.setOnAction(g -> {
-            // arraylist with all course names
-            ArrayList<String> courseNames = courseController.getAllCourses();
+            // arraylist with all contentItems
+            ArrayList<String> contentItems = contentItemController.getAllContentItems();
 
-            items.setAll(courseNames);
+            items.setAll(contentItems);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
@@ -187,7 +170,7 @@ public class CourseGUI extends Application {
             cursistPage.setCenter(list);
             BorderPane.setMargin(list, new Insets(25));
 
-            Label cursistPageTitle = new Label("Overview all courses");
+            Label cursistPageTitle = new Label("Overview all content");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
@@ -202,7 +185,7 @@ public class CourseGUI extends Application {
 
             mainScene = new Scene(cursistPage, 800, 600); // Assign mainScene here
 
-            stage.setTitle("Course overview");
+            stage.setTitle("Content overview");
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
@@ -211,15 +194,15 @@ public class CourseGUI extends Application {
 
         // Handle delete button action
         deleteButton.setOnAction(h -> {
-            String selectedCourse = list.getSelectionModel().getSelectedItem();
+            int selectedContent = list.getSelectionModel().getSelectedIndex();
 
-            if (selectedCourse != null) {
-                courseController.deleteCourse(selectedCourse);
-                items.remove(selectedCourse);
+            if (selectedContent != -1) {
+                contentItemController.deleteContentItem(selectedContent);
+                items.remove(selectedContent);
             }
         });
 
-        Label mainSceneTitle = new Label("Create a new course");
+        Label mainSceneTitle = new Label("Create new content item");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
         mainSceneTitle.setPadding(mainSceneTitlePadding);
@@ -236,12 +219,12 @@ public class CourseGUI extends Application {
         });
 
         Scene mainScene = new Scene(mainPane, 800, 600);
-        stage.setTitle("Course Management");
+        stage.setTitle("Content Management");
         stage.setScene(mainScene);
         stage.show();
 
         stage.setScene(homeScene);
-        stage.setTitle("Course Management");
+        stage.setTitle("Content Management");
         stage.show();
         // Create button op homepage
         createButton.setOnAction(j -> {
@@ -253,7 +236,7 @@ public class CourseGUI extends Application {
 
         editButton.setOnAction(k -> {
             BorderPane editPane = new BorderPane();
-            Label title = new Label("Choose course to edit");
+            Label title = new Label("Choose content item to edit");
             BorderPane.setAlignment(title, Pos.TOP_CENTER);
             title.setStyle("-fx-font-size: 30;");
             Button chooseButton = new Button("Edit");
@@ -266,9 +249,9 @@ public class CourseGUI extends Application {
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
-            ArrayList<String> courseNames = courseController.getAllCourses();
+            ArrayList<String> contentItems = contentItemController.getAllContentItems();
 
-            items.setAll(courseNames);
+            items.setAll(contentItems);
             list.setItems(items);
 
             editPane.setBottom(buttonsEdit);
@@ -284,13 +267,9 @@ public class CourseGUI extends Application {
             updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(updateScene);
             stage.show();
-            TextField updateNaamField = new TextField();
-            updateNaamField.setDisable(true);
-            TextField updateSubjectField = new TextField();
-            TextField updateIntroductionText = new TextField();
-            TextField updateDifficultyLevel = new TextField();
-            TextField updateCourseId = new TextField();
-            TextField updateModuleId = new TextField();
+            TextField updateContentID = new TextField();
+            DatePicker updateDate = new DatePicker();
+            TextField updateStatus = new TextField();
 
             chooseButton.setOnAction(f -> {
                 BorderPane editWindow = new BorderPane();
@@ -302,20 +281,15 @@ public class CourseGUI extends Application {
 
                 HBox editButtons = new HBox(backHome, confirmButton);
 
-                String selectedCourseName = list.getSelectionModel().getSelectedItem();
-                Course selectedCourse = courseController.getCourseByName(selectedCourseName);
+                String selectedContentItem = list.getSelectionModel().getSelectedItem();
+                ContentItem selectedContent = contentItemController
+                        .getContentItemByID(Integer.parseInt(selectedContentItem));
 
-                updateNaamField.setText(selectedCourse.getName());
-                updateSubjectField.setText(selectedCourse.getSubject());
-                updateIntroductionText.setText(selectedCourse.getIntroductionText());
-                updateDifficultyLevel
-                        .setText(String.valueOf(selectedCourse.getDifficultyLevel()));
-                updateCourseId.setText(String.valueOf(selectedCourse.getCourseId()));
-                updateModuleId.setText(String.valueOf(selectedCourse.getModuleId()));
+                updateContentID.setText(String.valueOf(selectedContent.getContentItemID()));
+                updateDate.setValue(selectedContent.getPublicationDate());
+                updateStatus.setText(selectedContent.getStatus());
 
-                VBox updateFields = new VBox(updateNaamField, updateSubjectField,
-                        updateIntroductionText,
-                        updateDifficultyLevel, updateCourseId, updateModuleId);
+                VBox updateFields = new VBox(updateContentID, updateDate, updateStatus);
                 updateFields.setSpacing(7);
 
                 editWindow.setTop(editWindowTitle);
@@ -333,21 +307,17 @@ public class CourseGUI extends Application {
                 stage.show();
 
                 confirmButton.setOnAction(g -> {
-                    selectedCourse.setName(updateNaamField.getText());
-                    selectedCourse.setSubject(updateSubjectField.getText());
-                    selectedCourse.setIntroductionText(updateIntroductionText.getText());
-                    selectedCourse.setDifficultyLevel(
-                            Integer.parseInt(updateDifficultyLevel.getText()));
-                    selectedCourse.setCourseId(Integer.parseInt(updateCourseId.getText()));
-                    selectedCourse.setModuleId(Integer.parseInt(updateModuleId.getText()));
+                    selectedContent.setContentItemID(Integer.parseInt(updateContentID.getText()));
+                    selectedContent.setPublicationDate(updateDate.getValue());
+                    selectedContent.setStatus(updateStatus.getText());
 
-                    courseController.updateCourseFields(selectedCourse);
+                    contentItemController.updateContentItemFields(selectedContent);
 
-                    // Add alert pop-up that course has been edited
+                    // Add alert pop-up that content has been edited
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Course edited");
+                    alert.setTitle("Content edited");
                     alert.setHeaderText(null);
-                    alert.setContentText("Course has been edited successfully!");
+                    alert.setContentText("Content has been edited successfully!");
                     alert.showAndWait();
 
                 });
@@ -358,7 +328,8 @@ public class CourseGUI extends Application {
         return homeScene;
     }
 
-    public CourseGUI(courseController courseController) {
+    public contentItemGUI(contentItemController contentItemController) {
+        this.contentItemController = contentItemController;
     }
 
     @Override

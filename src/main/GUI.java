@@ -4,6 +4,8 @@ import course.*;
 import cursist.*;
 import webcast.*;
 import module.*;
+import contentItem.*;
+import watchedContent.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
+        private WatchedContentController watchedContentController;
+        private contentItemController contentItemController;
         private courseController courseController;
         private ModuleController moduleController;
         private Scene codeCademyHomeScene;
@@ -43,7 +47,7 @@ public class GUI extends Application {
                 courseManagementButton = new Button("Course manager");
                 Button webcastManagementButton = new Button("Webcast manager");
                 Button contentItemManagementButton = new Button("Content item manager");
-                Button watchedContentManagementButton = new Button("Watched content manager");
+                Button watchedContentManagementButton = new Button("Watched content");
                 Button moduleManagementButton = new Button("Module manager");
                 Button enrollmentManagementButton = new Button("Enrollment manager");
                 Button certificateManagementButton = new Button("Certificate manager");
@@ -153,20 +157,19 @@ public class GUI extends Application {
                         stage.show();
                 });
 
-                // // Content Item Manager Scene
-                // contentItemManagementButton.setOnAction(e -> {
-                // ContentItemGUI contentItemGUI = new ContentItemGUI(contentItemController);
-                // stage.setScene(contentItemGUI.contentItemScene(stage));
-                // stage.show();
-                // });
+                // Content Item Manager Scene
+                contentItemManagementButton.setOnAction(e -> {
+                        contentItemGUI contentItemGUI = new contentItemGUI(contentItemController);
+                        stage.setScene(contentItemGUI.contentItemScene(stage));
+                        stage.show();
+                });
 
-                // // Watched Content Manager Scene
-                // watchedContentManagementButton.setOnAction(e -> {
-                // WatchedContentGUI watchedContentGUI = new
-                // WatchedContentGUI(watchedContentController);
-                // stage.setScene(watchedContentGUI.watchedContentScene(stage));
-                // stage.show();
-                // });
+                // Watched Content Manager Scene
+                watchedContentManagementButton.setOnAction(e -> {
+                        WatchedContentGUI watchedContentGUI = new WatchedContentGUI(watchedContentController);
+                        stage.setScene(watchedContentGUI.watchedContentScene(stage));
+                        stage.show();
+                });
 
                 // Module Manager Scene
                 moduleManagementButton.setOnAction(e -> {

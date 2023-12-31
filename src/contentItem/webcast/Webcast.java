@@ -1,11 +1,15 @@
 package webcast;
 
 import java.time.LocalDate;
+import java.util.Date;
+
+import contentItem.ContentItem;
 
 public class Webcast {
+    private ContentItem contentItem;
     private String titleWebcast;
     private int lengthWebcast;
-    private String datePublication;
+    private LocalDate datePublication;
     private String URL;
     private String nameSpeaker;
     private String organisationSpeaker;
@@ -27,11 +31,11 @@ public class Webcast {
         this.lengthWebcast = lengthWebcast;
     }
 
-    public String getDatePublication() {
+    public LocalDate getDatePublication() {
         return datePublication;
     }
 
-    public void setDatePublication(String date) {
+    public void setDatePublication(LocalDate date) {
         this.datePublication = date;
     }
 

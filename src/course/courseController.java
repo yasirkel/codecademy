@@ -28,7 +28,6 @@ public class courseController {
         return null;
     }
 
-    // COURSE
     public ArrayList<String> getAllCourses() {
         ArrayList<String> courseNames = new ArrayList<>();
 
@@ -48,6 +47,7 @@ public class courseController {
 
     public void saveCourse(Course course) {
         try {
+            connection = databaseManager.getConnection();
             String query = "INSERT INTO Course (Name, Subject, IntroductionText, DifficultyLevel, CourseID, ModuleID) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, course.getName());
