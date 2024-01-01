@@ -176,7 +176,7 @@ public class GUI extends Application {
                 // Module Manager Scene
                 moduleManagementButton.setOnAction(e -> {
                         ModuleGUI moduleGUI = new ModuleGUI(moduleController);
-                        stage.setScene(moduleGUI.moduleScene(stage));
+                        stage.setScene(moduleGUI.ModuleScene(stage));
                         stage.show();
                 });
 
