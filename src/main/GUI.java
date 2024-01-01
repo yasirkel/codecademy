@@ -2,10 +2,10 @@ package main;
 
 import course.*;
 import cursist.*;
-import webcast.*;
-import module.*;
 import contentItem.*;
 import watchedContent.*;
+import webcast.Webcast;
+import webcast.WebcastGUI;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import module.ModuleController;
+import module.ModuleGUI;
 
 public class GUI extends Application {
         private WatchedContentController watchedContentController;
