@@ -6,6 +6,7 @@ import webcast.*;
 import module.*;
 import contentItem.*;
 import watchedContent.*;
+import enrollment.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,6 +27,7 @@ public class GUI extends Application {
         private Button cursistManagementButton;
         private Button courseManagementButton;
         private CursistController cursistController;
+        private EnrollmentController enrollmentController;
 
         @Override
         public void start(Stage stage) {
@@ -51,6 +53,7 @@ public class GUI extends Application {
                 Button moduleManagementButton = new Button("Module manager");
                 Button enrollmentManagementButton = new Button("Enrollment manager");
                 Button certificateManagementButton = new Button("Certificate manager");
+                certificateManagementButton.setDisable(true);
 
                 cursistManagementButton.setOnMouseEntered(event -> cursistManagementButton.setCursor(Cursor.HAND));
                 cursistManagementButton.setOnMouseExited(event -> cursistManagementButton.setCursor(Cursor.DEFAULT));
@@ -178,19 +181,12 @@ public class GUI extends Application {
                         stage.show();
                 });
 
-                // // Enrollment Manager Scene
-                // enrollmentManagementButton.setOnAction(e -> {
-                // EnrollmentGUI enrollmentGUI = new EnrollmentGUI(enrollmentController);
-                // stage.setScene(enrollmentGUI.enrollmentScene(stage));
-                // stage.show();
-                // });
-
-                // // Certificate Manager Scene
-                // certificateManagementButton.setOnAction(e -> {
-                // CertificateGUI certificateGUI = new CertificateGUI(certificateController);
-                // stage.setScene(certificateGUI.certificateScene(stage));
-                // stage.show();
-                // });
+                // Enrollment Manager Scene
+                enrollmentManagementButton.setOnAction(e -> {
+                        EnrollmentGUI enrollmentGUI = new EnrollmentGUI(enrollmentController);
+                        stage.setScene(enrollmentGUI.enrollmentScene(stage));
+                        stage.show();
+                });
 
                 String buttonStyle = "-fx-background-color: #d2b48c;";
                 cursistManagementButton.setStyle(buttonStyle);

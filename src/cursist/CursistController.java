@@ -135,4 +135,21 @@ public class CursistController {
         }
     }
 
+    public ArrayList<String> getAllCursistEmailAddress() {
+        ArrayList<String> cursistEmailAddress = new ArrayList<>();
+
+        try {
+            ResultSet rs = query("SELECT * FROM Cursist");
+
+            while (rs.next()) {
+                String name = rs.getString("EmailAddress");
+                cursistEmailAddress.add(name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cursistEmailAddress;
+    }
+
 }
