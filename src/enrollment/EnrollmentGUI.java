@@ -3,11 +3,14 @@ package enrollment;
 import main.*;
 import DatabaseManager.*;
 import enrollment.*;
+import course.*;
+import cursist.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import contentItem.ContentItem;
 import contentItem.contentItemController;
+import course.courseController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +32,8 @@ public class EnrollmentGUI extends Application {
     private Scene homeScene;
     private Button backHome;
     private Button backToCodeCademy;
+    private course.courseController courseController;
+    private cursist.CursistController cursistController;
 
     public Scene enrollmentScene(Stage stage) {
         GUI gui = new GUI();
@@ -80,10 +85,18 @@ public class EnrollmentGUI extends Application {
         DatePicker datePicker = new DatePicker();
         datePicker.setPromptText("Enrollment Date");
 
-        ComboBox courseNameBox = new ComboBox<>();
+        // Combobox for available courses
+        courseController = new courseController();
+        ArrayList<String> courseNames = courseController.getAllCourses();
+        ObservableList<String> options = FXCollections.observableArrayList(courseNames);
+        ComboBox courseNameBox = new ComboBox<>(options);
         courseNameBox.setPromptText("Choose course name");
 
-        ComboBox cursistEmailBox = new ComboBox<>();
+        // Combobox for available cursists
+        cursistController = new CursistController();
+        ArrayList<String> cursistEmails = cursistController.getAllCursistEmailAddress();
+        ObservableList<String> cursistOptions = FXCollections.observableArrayList(cursistEmails);
+        ComboBox cursistEmailBox = new ComboBox<>(cursistOptions);
         cursistEmailBox.setPromptText("Choose your email");
 
         Button addButton = new Button("Register enrollment Item");
