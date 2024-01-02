@@ -60,7 +60,7 @@ public class WatchedContentController {
 
     public void deleteWatchedContent(int contentItemID) {
         try {
-            String query = "DELETE FROM WatchedContent WHERE ContentItemID = ?";
+            String query = "DELETE FROM ContentItem WHERE ContentItemID = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, String.valueOf(contentItemID));
                 statement.executeUpdate();

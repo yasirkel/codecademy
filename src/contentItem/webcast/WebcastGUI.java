@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import DatabaseManager.*;
+import contentItem.contentItemController;
 import contentItem.ContentItem;
 import contentItem.contentItemController;
 import javafx.application.Application;
@@ -33,6 +34,7 @@ public class WebcastGUI extends Application {
     private Button backHome;
     private DatabaseManager db = new DatabaseManager();
     private Button backToCodeCademy;
+    private contentItemController contentItemController;
 
     public Scene webcastScene(Stage stage) {
         GUI gui = new GUI();
@@ -105,7 +107,11 @@ public class WebcastGUI extends Application {
         TextField createContentItemIDField = new TextField();
         createContentItemIDField.setPromptText("Content item ID");
 
-        ComboBox<String> comboBox = new ComboBox<>();
+        // Create a combo box to select the content item ID
+        contentItemController = new contentItemController();
+        List<String> contentItemIDs = contentItemController.getAllContentItems();
+        ObservableList<String> ids = FXCollections.observableArrayList(contentItemIDs);
+        ComboBox<String> comboBox = new ComboBox<>(ids);
         comboBox.setPromptText("Choose contentItemID");
 
         Button addButton = new Button("Add Webcast");

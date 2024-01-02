@@ -113,4 +113,20 @@ public class ModuleController {
         }
     }
 
+    public ArrayList<Integer> getAllModuleIDs() {
+        ArrayList<Integer> moduleIDs = new ArrayList<>();
+
+        try {
+            ResultSet rs = databaseManager.query("SELECT * FROM Module");
+
+            while (rs.next()) {
+                int id = rs.getInt("ModuleID");
+                moduleIDs.add(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return moduleIDs;
+    }
 }

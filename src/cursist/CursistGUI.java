@@ -265,6 +265,8 @@ public class CursistGUI extends Application {
                 Label cursistInfoAddress = new Label("Address: " + selectedCursistForInfo.getAddress());
                 Label cursistInfoCity = new Label("City: " + selectedCursistForInfo.getCity());
                 Label cursistInfoCountry = new Label("Country: " + selectedCursistForInfo.getCountry());
+                Label cursistID = new Label(
+                        "Cursist ID: " + cursistController.getCursistID(selectedCursistForInfo.getEmailAddress()));
 
                 // Create VBox for info
                 VBox vboxInfoTitle = new VBox(cursistInfoTitle);
@@ -273,7 +275,7 @@ public class CursistGUI extends Application {
 
                 VBox vboxInfo = new VBox(cursistInfoName, cursistInfoEmail, cursistInfoBirthdate,
                         cursistInfoGender,
-                        cursistInfoAddress, cursistInfoCity, cursistInfoCountry, backHome);
+                        cursistInfoAddress, cursistInfoCity, cursistInfoCountry, cursistID, backHome);
                 vboxInfo.setStyle(
                         "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px; -fx-border-color: #d2b48c; -fx-border-width: 2px;");
 

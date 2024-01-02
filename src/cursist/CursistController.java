@@ -152,4 +152,20 @@ public class CursistController {
         return cursistEmailAddress;
     }
 
+    public int getCursistID(String emailAddress) {
+        try {
+            String query = "SELECT CursistID FROM Cursist WHERE EmailAddress = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, emailAddress);
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("CursistID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }
