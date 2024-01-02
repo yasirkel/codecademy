@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.GUI;
+import contentItem.contentItemController;
 
 public class ModuleGUI extends contentItem.ContentItem {
     // private ModuleController moduleController;
@@ -120,6 +121,7 @@ public class ModuleGUI extends contentItem.ContentItem {
     // }
 
     private ModuleController ModuleController;
+    private contentItemController contentItemController;
     private ListView<String> list;
     private ObservableList<String> items;
     private Scene mainScene;
@@ -191,6 +193,15 @@ public class ModuleGUI extends contentItem.ContentItem {
         TextField followNumberField = new TextField();
         followNumberField.setPromptText("follow number");
 
+        TextField moduleIdField = new TextField();
+        moduleIdField.setPromptText("Module ID");
+
+        contentItemController = new contentItemController();
+        ArrayList<Integer> contentItemIDs = contentItemController.getAllContentItems();
+        ObservableList<Integer> contentItemIDList = FXCollections.observableArrayList(contentItemIDs);
+        ComboBox<Integer> comboBox = new ComboBox(contentItemIDList);
+        comboBox.setPromptText("Select a content item id");
+
         Button addButton = new Button("Add Module");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
@@ -210,6 +221,8 @@ public class ModuleGUI extends contentItem.ContentItem {
             String contactPersonName = contactPersonNameField.getText();
             String contactPersonEmail = contactPersonEmailField.getText();
             int followNumber = Integer.valueOf(followNumberField.getText());
+            int moduleId = Integer.valueOf(moduleIdField.getText());
+            int contentItemId = (int) comboBox.getSelectionModel().getSelectedItem();
 
             Module newModule = new Module();
             newModule.setTitle(title);
@@ -217,15 +230,10 @@ public class ModuleGUI extends contentItem.ContentItem {
             newModule.setContactPersonName(contactPersonName);
             newModule.setContactPersonEmail(contactPersonEmail);
             newModule.setFollowNumber(followNumber);
+            newModule.setModuleID(moduleId);
+            newModule.setContentItemID(contentItemId);
 
             ModuleController.saveModule(newModule);
-
-            // Show alert after adding a Module
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Module added successfully.");
-            alert.showAndWait();
 
             // Clear the input fields after adding a Module
             TitleField.clear();
@@ -233,10 +241,12 @@ public class ModuleGUI extends contentItem.ContentItem {
             contactPersonNameField.clear();
             contactPersonEmailField.clear();
             followNumberField.clear();
+            moduleIdField.clear();
+            comboBox.getSelectionModel().clearSelection();
         });
 
         VBox createFields = new VBox(TitleField, VersionField, contactPersonNameField,
-                contactPersonEmailField, followNumberField, addButton);
+                contactPersonEmailField, followNumberField, moduleIdField, comboBox, addButton);
         createFields.setSpacing(7);
 
         // CRUD Buttons are created

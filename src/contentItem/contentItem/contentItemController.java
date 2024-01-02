@@ -28,14 +28,14 @@ public class contentItemController {
         return null;
     }
 
-    public ArrayList<String> getAllContentItems() {
-        ArrayList<String> contentItems = new ArrayList<>();
+    public ArrayList<Integer> getAllContentItems() {
+        ArrayList<Integer> contentItems = new ArrayList<>();
 
         try {
             ResultSet rs = query("SELECT * FROM ContentItem");
 
             while (rs.next()) {
-                String contentItemId = rs.getString("ContentItemID");
+                Integer contentItemId = rs.getInt("ContentItemID");
                 contentItems.add(contentItemId);
             }
         } catch (SQLException e) {

@@ -109,9 +109,9 @@ public class WebcastGUI extends Application {
 
         // Create a combo box to select the content item ID
         contentItemController = new contentItemController();
-        List<String> contentItemIDs = contentItemController.getAllContentItems();
-        ObservableList<String> ids = FXCollections.observableArrayList(contentItemIDs);
-        ComboBox<String> comboBox = new ComboBox<>(ids);
+        List contentItemIDs = contentItemController.getAllContentItems();
+        ObservableList ids = FXCollections.observableArrayList(contentItemIDs);
+        ComboBox comboBox = new ComboBox<>(ids);
         comboBox.setPromptText("Choose contentItemID");
 
         Button addButton = new Button("Add Webcast");
@@ -136,7 +136,7 @@ public class WebcastGUI extends Application {
             String url = createURLField.getText();
             String nameSpeaker = createNameSpeakerField.getText();
             String organisationSpeaker = createOrganisationSpeakerField.getText();
-            String contentItemIDString = comboBox.getValue();
+            String contentItemIDString = comboBox.getValue().toString();
 
             int contentItemID = Integer.valueOf(contentItemIDString);
 

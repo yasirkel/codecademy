@@ -1,7 +1,7 @@
 package watchedContent;
 
 import main.*;
-
+import cursist.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -27,6 +27,8 @@ public class WatchedContentGUI extends Application {
     private Scene homeScene;
     private Button backHome;
     private Button backToCodeCademy;
+    private contentItem.contentItemController contentItemController;
+    private cursist.CursistController cursistController;
 
     public Scene watchedContentScene(Stage stage) {
         GUI gui = new GUI();
@@ -75,10 +77,17 @@ public class WatchedContentGUI extends Application {
         homeScene = new Scene(homePane, 800, 600);
 
         // Create layout for the watched content creation
-        ComboBox contentItemIDBox = new ComboBox<>();
+
+        contentItemController = new contentItem.contentItemController();
+        ArrayList<Integer> contentItems = contentItemController.getAllContentItems();
+        ObservableList<Integer> contentItemsList = FXCollections.observableArrayList(contentItems);
+        ComboBox contentItemIDBox = new ComboBox<>(contentItemsList);
         contentItemIDBox.setPromptText("Choose contentitemId");
 
-        ComboBox cursistIDBox = new ComboBox<>();
+        cursistController = new CursistController();
+        ArrayList<Integer> cursists = cursistController.getAllCursistIDs();
+        ObservableList<Integer> cursistsList = FXCollections.observableArrayList(cursists);
+        ComboBox cursistIDBox = new ComboBox<>(cursistsList);
         cursistIDBox.setPromptText("Choose cursistId");
 
         Label percentageSpinnerLabel = new Label("%");

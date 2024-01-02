@@ -168,4 +168,21 @@ public class CursistController {
         return -1;
     }
 
+    public ArrayList<Integer> getAllCursistIDs() {
+        ArrayList<Integer> cursistIDs = new ArrayList<>();
+
+        try {
+            ResultSet rs = query("SELECT * FROM Cursist");
+
+            while (rs.next()) {
+                Integer cursistID = rs.getInt("CursistID");
+                cursistIDs.add(cursistID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cursistIDs;
+    }
+
 }

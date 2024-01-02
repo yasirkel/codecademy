@@ -33,7 +33,7 @@ public class WatchedContentController {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, String.valueOf(contentItemID));
             statement.setString(2, String.valueOf(cursistID));
-            statement.setString(3, String.valueOf(percentageWatched));
+            statement.setInt(3, (int) percentageWatched);
 
             statement.executeUpdate();
         } catch (Exception e) {

@@ -2,6 +2,8 @@ package module;
 
 import DatabaseManager.*;
 import course.Course;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +54,13 @@ public class ModuleController {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Module already exists.");
+            alert.showAndWait();
+            return;
+
         }
     }
 
@@ -129,4 +137,5 @@ public class ModuleController {
 
         return moduleIDs;
     }
+
 }

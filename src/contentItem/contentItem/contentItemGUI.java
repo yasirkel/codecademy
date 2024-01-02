@@ -158,7 +158,7 @@ public class contentItemGUI extends Application {
         // CRUD (read) functionality...
         readButton.setOnAction(g -> {
             // arraylist with all contentItems
-            ArrayList<String> contentItems = contentItemController.getAllContentItems();
+            ArrayList contentItems = contentItemController.getAllContentItems();
 
             items.setAll(contentItems);
             list.setItems(items);
@@ -249,7 +249,7 @@ public class contentItemGUI extends Application {
 
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
-            ArrayList<String> contentItems = contentItemController.getAllContentItems();
+            ArrayList contentItems = contentItemController.getAllContentItems();
 
             items.setAll(contentItems);
             list.setItems(items);
