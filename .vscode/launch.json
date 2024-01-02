@@ -9,6 +9,13 @@
       "name": "CodeCademy",
       "request": "launch",
       "mainClass": "main.CodeCademy",
+      "projectName": "codecademy_db527fad"
+    },
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "main.CodeCademy",
       "projectName": "CodeCademy_dcab69ce"
     },
     {

@@ -2,10 +2,10 @@ package main;
 
 import course.*;
 import cursist.*;
-import webcast.*;
-import module.*;
 import contentItem.*;
 import watchedContent.*;
+import webcast.Webcast;
+import webcast.WebcastGUI;
 import enrollment.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -17,6 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import module.ModuleController;
+import module.ModuleGUI;
 
 public class GUI extends Application {
         private WatchedContentController watchedContentController;
@@ -177,7 +179,7 @@ public class GUI extends Application {
                 // Module Manager Scene
                 moduleManagementButton.setOnAction(e -> {
                         ModuleGUI moduleGUI = new ModuleGUI(moduleController);
-                        stage.setScene(moduleGUI.moduleScene(stage));
+                        stage.setScene(moduleGUI.ModuleScene(stage));
                         stage.show();
                 });
 

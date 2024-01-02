@@ -5,8 +5,7 @@ import main.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import contentItem.ContentItem;
-import contentItem.contentItemController;
+import contentItem.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
