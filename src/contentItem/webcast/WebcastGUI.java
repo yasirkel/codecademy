@@ -205,23 +205,30 @@ public class WebcastGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all course names
             ArrayList<String> webcastTitles = webcastController.getAllWebcasts();
+            Button infoButton = new Button("More Info");
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+            infoButton.setPadding(buttonsMenuPadding);
+
+            Label label = new Label("Webcast title ↓");
+            label.setStyle("-fx-font-size: 20;");
 
             items.setAll(webcastTitles);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
+            VBox centerBox = new VBox(label, list);
             BorderPane webcastPage = new BorderPane();
 
-            webcastPage.setCenter(list);
-            BorderPane.setMargin(list, new Insets(25));
+            webcastPage.setCenter(centerBox);
+            BorderPane.setMargin(centerBox, new Insets(25));
 
             Label webcastPageTitle = new Label("Overview all webcasts");
             webcastPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(webcastPageTitle, Pos.CENTER);
             webcastPage.setTop(webcastPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -235,6 +242,18 @@ public class WebcastGUI extends Application {
             stage.setTitle("Webcast overview");
             stage.setScene(mainScene);
             stage.show();
+
+            infoButton.setOnAction(h -> {
+                String selectedWebcast = list.getSelectionModel().getSelectedItem();
+                Webcast webcast = webcastController.getWebcastByName(selectedWebcast);
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText(null);
+                alert.setContentText(webcast.toString());
+                alert.showAndWait();
+
+            });
 
         });
 

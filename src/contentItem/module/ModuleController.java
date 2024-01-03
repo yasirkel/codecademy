@@ -28,7 +28,7 @@ public class ModuleController {
             ResultSet rs = databaseManager.query("SELECT * FROM Module");
 
             while (rs.next()) {
-                String title = rs.getString("Title");
+                String title = rs.getString("ModuleID");
                 moduleNames.add(title);
             }
         } catch (SQLException e) {
@@ -65,11 +65,11 @@ public class ModuleController {
     }
 
     // Function gets saved in database
-    public void deleteModule(String moduleTitle) {
+    public void deleteModule(String moduleId) {
         try {
-            String query = "DELETE FROM Module WHERE Title = ?";
+            String query = "DELETE FROM Module WHERE ModuleID = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, moduleTitle);
+                statement.setString(1, moduleId);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -78,11 +78,11 @@ public class ModuleController {
     }
 
     // This function returns the searched module
-    public Module getModuleByTitle(String title) {
+    public Module getModuleByTitle(int id) {
         try {
-            String query = "SELECT * FROM Module WHERE Title = ?";
+            String query = "SELECT * FROM Module WHERE ModuleID = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, title);
+                statement.setString(1, String.valueOf(id));
                 ResultSet rs = statement.executeQuery();
 
                 if (rs.next()) {
@@ -92,6 +92,8 @@ public class ModuleController {
                     module.setContactPersonName(rs.getString("ContactPersonName"));
                     module.setContactPersonEmail(rs.getString("ContactPersonEmail"));
                     module.setFollowNumber(rs.getInt("FollowNumber"));
+                    module.setContentItemID(rs.getInt("ContentItemID"));
+                    module.setModuleID(rs.getInt("ModuleID"));
 
                     return module;
                 }

@@ -165,23 +165,30 @@ public class WatchedContentGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all watchedContent
             ArrayList<String> watchedContent = watchedContentController.getAllWatchedContent();
+            Button infoButton = new Button("More Info");
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+            infoButton.setPadding(buttonsMenuPadding);
+
+            Label label = new Label("Content item ID ↓");
+            label.setStyle("-fx-font-size: 20;");
 
             items.setAll(watchedContent);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
+            VBox centerBox = new VBox(label, list);
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setCenter(list);
-            BorderPane.setMargin(list, new Insets(25));
+            cursistPage.setCenter(centerBox);
+            BorderPane.setMargin(centerBox, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all content");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -195,6 +202,24 @@ public class WatchedContentGUI extends Application {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            infoButton.setOnAction(h -> {
+                String selectedContent = String.valueOf(list.getSelectionModel().getSelectedItem());
+                WatchedContent rawContent = watchedContentController
+                        .getWatchedContentById(Integer.valueOf(selectedContent));
+                WatchedContent finalContent = watchedContentController.getWatchedContent(rawContent.getContentItemID(),
+                        rawContent.getCursistID());
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Content");
+                alert.setHeaderText(null);
+                alert.setContentText("ContentItemID: " + finalContent.getContentItemID() + "\nCursistID: "
+                        + finalContent.getCursistID() + "\nPercentageWatched: " + finalContent.getPercentageWatched()
+                        + "%" + "\n");
+
+                alert.showAndWait();
+
+            });
 
         });
 

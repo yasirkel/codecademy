@@ -69,4 +69,45 @@ public class WatchedContentController {
             e.printStackTrace();
         }
     }
+
+    public WatchedContent getWatchedContent(int contentItemID, int cursistID) {
+        try {
+            String query = "SELECT * FROM WatchedContent WHERE ContentItemID = ? AND CursistID = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, String.valueOf(contentItemID));
+                statement.setString(2, String.valueOf(cursistID));
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    WatchedContent watchedContent = new WatchedContent();
+                    watchedContent.setContentItemID(rs.getInt("ContentItemID"));
+                    watchedContent.setCursistID(rs.getInt("CursistID"));
+                    watchedContent.setPercentageWatched(rs.getDouble("PercentageWatched"));
+                    return watchedContent;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public WatchedContent getWatchedContentById(int contentItemID) {
+        try {
+            String query = "SELECT * FROM WatchedContent WHERE ContentItemID = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, String.valueOf(contentItemID));
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    WatchedContent watchedContent = new WatchedContent();
+                    watchedContent.setContentItemID(rs.getInt("ContentItemID"));
+                    watchedContent.setCursistID(rs.getInt("CursistID"));
+                    watchedContent.setPercentageWatched(rs.getDouble("PercentageWatched"));
+                    return watchedContent;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

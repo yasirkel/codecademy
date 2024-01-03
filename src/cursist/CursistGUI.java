@@ -215,15 +215,19 @@ public class CursistGUI extends Application {
         readButton.setOnAction(e -> {
             // arraylist of cursist names
             ArrayList<String> cursistNames = cursistController.getAllCursist();
+            Label label = new Label("Cursist Name ↓");
+            label.setStyle("-fx-font-size: 20;");
 
             items.setAll(cursistNames);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
 
+            VBox centerBox = new VBox(label, list);
+
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setCenter(list);
-            BorderPane.setMargin(list, new Insets(25));
+            cursistPage.setCenter(centerBox);
+            BorderPane.setMargin(centerBox, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all cursists");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
@@ -254,44 +258,24 @@ public class CursistGUI extends Application {
                 String selectedCursist = list.getSelectionModel().getSelectedItem();
                 Cursist selectedCursistForInfo = cursistController.getCursistByName(selectedCursist);
 
-                Label cursistInfoTitle = new Label("Cursist info:");
-                cursistInfoTitle.setStyle(
-                        "-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: #d2b48c; -fx-alignment: center; -fx-background-color: #f5f5dc; -fx-padding: 10px;");
+                String name = selectedCursistForInfo.getName();
+                String email = selectedCursistForInfo.getEmailAddress();
+                String birthdate = selectedCursistForInfo.getBirthDate().toString();
+                String gender = selectedCursistForInfo.getSex();
+                String address = selectedCursistForInfo.getAddress();
+                String city = selectedCursistForInfo.getCity();
+                String country = selectedCursistForInfo.getCountry();
+                String id = String.valueOf(selectedCursistForInfo.getcursistID());
 
-                Label cursistInfoName = new Label("Name: " + selectedCursistForInfo.getName());
-                Label cursistInfoEmail = new Label("Email: " + selectedCursistForInfo.getEmailAddress());
-                Label cursistInfoBirthdate = new Label("Birthdate: " + selectedCursistForInfo.getBirthDate());
-                Label cursistInfoGender = new Label("Gender: " + selectedCursistForInfo.getSex());
-                Label cursistInfoAddress = new Label("Address: " + selectedCursistForInfo.getAddress());
-                Label cursistInfoCity = new Label("City: " + selectedCursistForInfo.getCity());
-                Label cursistInfoCountry = new Label("Country: " + selectedCursistForInfo.getCountry());
-                Label cursistID = new Label(
-                        "Cursist ID: " + cursistController.getCursistID(selectedCursistForInfo.getEmailAddress()));
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Cursist info");
+                alert.setHeaderText(null);
+                alert.setContentText("Name: " + name + "\nEmail: " + email + "\nBirthdate: " + birthdate + "\nGender: "
+                        + gender + "\nAddress: " + address + "\nCity: " + city + "\nCountry: " + country + "\nID: "
+                        + id);
 
-                // Create VBox for info
-                VBox vboxInfoTitle = new VBox(cursistInfoTitle);
-                vboxInfoTitle.setStyle(
-                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px;");
+                alert.showAndWait();
 
-                VBox vboxInfo = new VBox(cursistInfoName, cursistInfoEmail, cursistInfoBirthdate,
-                        cursistInfoGender,
-                        cursistInfoAddress, cursistInfoCity, cursistInfoCountry, cursistID, backHome);
-                vboxInfo.setStyle(
-                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px; -fx-border-color: #d2b48c; -fx-border-width: 2px;");
-
-                VBox vboxInfoBackhome = new VBox(backHome);
-                vboxInfoBackhome.setStyle(
-                        "-fx-font-size: 24; -fx-alignment: center; -fx-padding: 10px;");
-
-                BorderPane infoCursistPane = new BorderPane();
-                infoCursistPane.setTop(vboxInfoTitle);
-                infoCursistPane.setCenter(vboxInfo);
-                infoCursistPane.setBottom(vboxInfoBackhome);
-
-                Scene infoCursistScene = new Scene(infoCursistPane, 800, 600);
-                infoCursistScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
-                stage.setScene(infoCursistScene);
-                stage.show();
             });
 
         });

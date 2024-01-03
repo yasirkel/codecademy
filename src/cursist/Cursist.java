@@ -10,7 +10,7 @@ public class Cursist {
     private String address;
     private String city;
     private String country;
-    private int contentItemID;
+    private int cursistID;
 
     public String getEmailAddress() {
         return emailAddress;
@@ -68,11 +68,11 @@ public class Cursist {
         this.country = country;
     }
 
-    public int getContentItemID() {
-        return contentItemID;
+    public int getcursistID() {
+        return cursistID;
     }
 
-    public void setContentItemID(int contentItemID) {
-        this.contentItemID = contentItemID;
+    public void setcursistID(int cursistID) {
+        this.cursistID = cursistID;
     }
 }

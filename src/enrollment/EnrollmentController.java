@@ -51,7 +51,7 @@ public class EnrollmentController {
             ResultSet rs = query("SELECT * FROM Enrollment");
 
             while (rs.next()) {
-                String contentItemId = rs.getString("CourseName");
+                String contentItemId = rs.getString("CursistEmailAddress");
                 wachtedContent.add(contentItemId);
             }
         } catch (SQLException e) {
@@ -100,7 +100,7 @@ public class EnrollmentController {
 
     public Enrollment getEnrollmentByName(String name) {
         try {
-            String query = "SELECT * FROM Enrollment WHERE CourseName = ?";
+            String query = "SELECT * FROM Enrollment WHERE CursistEmailAddress = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, name);
                 ResultSet rs = statement.executeQuery();

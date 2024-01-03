@@ -163,15 +163,19 @@ public class contentItemGUI extends Application {
             infoButton.setStyle("-fx-background-color: #d2b48c;");
             infoButton.setPadding(buttonsMenuPadding);
 
+            Label label = new Label("Content item ID ↓");
+            label.setStyle("-fx-font-size: 20;");
+
             items.setAll(contentItems);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
+            VBox centerBox = new VBox(label, list);
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setCenter(list);
-            BorderPane.setMargin(list, new Insets(25));
+            cursistPage.setCenter(centerBox);
+            BorderPane.setMargin(centerBox, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all content");
             cursistPageTitle.setStyle("-fx-font-size: 30;");

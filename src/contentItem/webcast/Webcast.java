@@ -71,4 +71,10 @@ public class Webcast {
         this.contentItemID = contentItemID;
     }
 
+    public String toString() {
+        return "Title: " + titleWebcast + "\n" + "Length: " + lengthWebcast + "\n" + "Date: " + datePublication + "\n"
+                + "URL: " + URL + "\n"
+                + "Speaker: " + nameSpeaker + "\n" + "Organisation: " + organisationSpeaker + "\n" + "ContentItemID: "
+                + contentItemID;
+    }
 }

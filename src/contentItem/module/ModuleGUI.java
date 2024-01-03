@@ -282,23 +282,30 @@ public class ModuleGUI extends contentItem.ContentItem {
         readButton.setOnAction(g -> {
             // arraylist with all Module names
             ArrayList<String> ModuleNames = ModuleController.getAllModules();
+            Button infoButton = new Button("More Info");
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+            infoButton.setPadding(buttonsMenuPadding);
+
+            Label label = new Label("Module ID ↓");
+            label.setStyle("-fx-font-size: 20;");
 
             items.setAll(ModuleNames);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             list.setPadding(buttonsMenuPadding);
 
+            VBox centerBox = new VBox(label, list);
             BorderPane cursistPage = new BorderPane();
 
-            cursistPage.setCenter(list);
-            BorderPane.setMargin(list, new Insets(25));
+            cursistPage.setCenter(centerBox);
+            BorderPane.setMargin(centerBox, new Insets(25));
 
             Label cursistPageTitle = new Label("Overview all Modules");
             cursistPageTitle.setStyle("-fx-font-size: 30;");
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -312,6 +319,29 @@ public class ModuleGUI extends contentItem.ContentItem {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            infoButton.setOnAction(j -> {
+                String selectedModule = list.getSelectionModel().getSelectedItem();
+                Module module = ModuleController.getModuleByTitle(Integer.valueOf(selectedModule));
+
+                String title = module.getTitle();
+                String version = module.getVersion();
+                String contactPersonName = module.getContactPersonName();
+                String contactPersonEmail = module.getContactPersonEmail();
+                int followNumber = module.getFollowNumber();
+                int contentItemID = module.getContentItemID();
+                int moduleID = module.getModuleID();
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Module");
+                alert.setHeaderText(null);
+                alert.setContentText("Title: " + title + "\n" + "Version: " + version + "\n"
+                        + "ContactPersonName: " + contactPersonName + "\n" + "ContactPersonEmail: "
+                        + contactPersonEmail + "\n" + "FollowNumber: " + followNumber + "\n"
+                        + "ContentItemID: " + contentItemID + "\n" + "ModuleID: " + moduleID + "\n");
+
+                alert.showAndWait();
+            });
 
         });
 
@@ -409,7 +439,7 @@ public class ModuleGUI extends contentItem.ContentItem {
                 HBox editButtons = new HBox(backHome, confirmButton);
 
                 String selectedModuleName = list.getSelectionModel().getSelectedItem();
-                Module selectedModule = ModuleController.getModuleByTitle(selectedModuleName);
+                Module selectedModule = ModuleController.getModuleByTitle(Integer.valueOf(selectedModuleName));
 
                 updateTitleField.setText(selectedModule.getTitle());
                 updateVerionField.setText(selectedModule.getVersion());
