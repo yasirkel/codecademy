@@ -147,7 +147,7 @@ public class GUI extends Application {
                 // Create the homepage scene
                 codeCademyHomeScene = new Scene(codeCademyPane, 800, 600);
                 stage.setScene(codeCademyHomeScene);
-                stage.setTitle("Yassine Boukrach || 2206857 - Yasir Kelloulou || 0000000 - Amin Ahmidout || 0000000");
+                stage.setTitle("CodeCademy");
                 stage.show();
 
                 // Cursist Manager Scene

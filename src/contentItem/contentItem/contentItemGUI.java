@@ -27,9 +27,11 @@ public class contentItemGUI extends Application {
     private Button backToCodeCademy;
 
     public Scene contentItemScene(Stage stage) {
+        // Create a new GUI instance
         GUI gui = new GUI();
         contentItemController = new contentItemController();
 
+        // Create a button to go back to the homepage
         Button backToHomeButton = new Button("< Home");
         backToHomeButton.setStyle("-fx-background-color: #d2b48c;");
         backHome = new Button("< Home");
@@ -43,12 +45,14 @@ public class contentItemGUI extends Application {
         Button readButton = new Button("All Content");
         Label welcomeLabel = new Label("Welcome to Content Item management");
 
+        // Add padding to the welcome message
         Insets welcomeLabelPadding = new Insets(25);
         welcomeLabel.setPadding(welcomeLabelPadding);
         welcomeLabel.setStyle("-fx-font-size: 24;");
         Button editButton = new Button("Edit Content");
         backToCodeCademy = new Button("< CodeCademy");
 
+        // Add action to the backToCodeCademy button
         backToCodeCademy.setOnAction(l -> {
             stage.setScene(gui.getHomeScene(stage));
             stage.show();
@@ -62,6 +66,7 @@ public class contentItemGUI extends Application {
         homePane.setTop(welcomeLabel);
         VBox homeLayout = new VBox(10, createButton, readButton, editButton, backToCodeCademy);
 
+        // Set the size and style of the buttons
         createButton.setPrefSize(150, 50);
         createButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
         readButton.setPrefSize(150, 50);
@@ -69,12 +74,14 @@ public class contentItemGUI extends Application {
         editButton.setPrefSize(150, 50);
         editButton.setStyle("-fx-font-size: 18; -fx-background-color: #d2b48c;");
 
+        // Set the layout and scene for the homepage
         homeLayout.setAlignment(Pos.CENTER);
         homePane.setCenter(homeLayout);
         Insets padding = new Insets(100);
         homePane.setPadding(padding);
         homeScene = new Scene(homePane, 800, 600);
 
+        // Create forms for adding content items
         TextField createIdField = new TextField();
         createIdField.setPromptText("Content Item ID");
 
@@ -84,11 +91,14 @@ public class contentItemGUI extends Application {
         TextField createStatusField = new TextField();
         createStatusField.setPromptText("Status");
 
+        // Create buttons for adding content items
         Button addButton = new Button("Add Content Item");
         addButton.setStyle("-fx-background-color: #d2b48c;");
 
+        // Add action to the add button
         addButton.setOnAction(f -> {
 
+            // Validate input
             if (createIdField.getText().isBlank()) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -97,7 +107,7 @@ public class contentItemGUI extends Application {
                 alert.showAndWait();
                 return;
             }
-
+            // Add content item
             int contentItemID = Integer.parseInt(createIdField.getText());
             LocalDate date = createDateField.getValue();
             String status = createStatusField.getText();
@@ -133,6 +143,7 @@ public class contentItemGUI extends Application {
         // Create layout for buttons
         HBox buttonsMenu = new HBox(addButton, backToHomeButton);
 
+        // Set the size and style of the buttons
         Insets buttonsMenuPadding = new Insets(10);
         addButton.setPadding(buttonsMenuPadding);
         deleteButton.setPadding(buttonsMenuPadding);
@@ -163,6 +174,7 @@ public class contentItemGUI extends Application {
             infoButton.setStyle("-fx-background-color: #d2b48c;");
             infoButton.setPadding(buttonsMenuPadding);
 
+            // Create layout for cursist overview
             Label label = new Label("Content item ID ↓");
             label.setStyle("-fx-font-size: 20;");
 
@@ -190,8 +202,10 @@ public class contentItemGUI extends Application {
             BorderPane.setMargin(cursistPageButtons, new Insets(0, 0, 25, 0));
             cursistPage.setBottom(cursistPageButtons);
 
+            // Create mainScene
             mainScene = new Scene(cursistPage, 800, 600); // Assign mainScene here
 
+            // Set title and style
             stage.setTitle("Content overview");
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
@@ -199,6 +213,7 @@ public class contentItemGUI extends Application {
 
             // Handle info button action
             infoButton.setOnAction(h -> {
+                // Get selected content
                 String selectedContent = String.valueOf(list.getSelectionModel().getSelectedItem());
                 ContentItem selectedContentItem = contentItemController
                         .getContentItemByID(Integer.valueOf(selectedContent));
@@ -207,6 +222,7 @@ public class contentItemGUI extends Application {
                 String publicationDate = String.valueOf(selectedContentItem.getPublicationDate());
                 String status = String.valueOf(selectedContentItem.getStatus());
 
+                // Show alert
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Content Item");
                 alert.setHeaderText(null);
@@ -221,14 +237,17 @@ public class contentItemGUI extends Application {
 
         // Handle delete button action
         deleteButton.setOnAction(h -> {
+            // Get selected content
             int selectedContent = list.getSelectionModel().getSelectedIndex();
 
+            // Delete selected content
             if (selectedContent != -1) {
                 contentItemController.deleteContentItem(selectedContent);
                 items.remove(selectedContent);
             }
         });
 
+        // Create mainScene
         Label mainSceneTitle = new Label("Create new content item");
         mainSceneTitle.setStyle("-fx-font-size: 30;");
         Insets mainSceneTitlePadding = new Insets(0, 0, 25, 0);
@@ -245,15 +264,13 @@ public class contentItemGUI extends Application {
             stage.show();
         });
 
+        // Create mainScene
         Scene mainScene = new Scene(mainPane, 800, 600);
         stage.setTitle("Content Management");
         stage.setScene(mainScene);
         stage.show();
 
-        stage.setScene(homeScene);
-        stage.setTitle("Content Management");
-        stage.show();
-        // Create button op homepage
+        // Create a button to go back to the homepage
         createButton.setOnAction(j -> {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
@@ -261,7 +278,9 @@ public class contentItemGUI extends Application {
 
         });
 
+        // Handle edit button action
         editButton.setOnAction(k -> {
+            // Create layout for the homepage
             BorderPane editPane = new BorderPane();
             Label title = new Label("Choose content item to edit");
             BorderPane.setAlignment(title, Pos.TOP_CENTER);
@@ -274,6 +293,7 @@ public class contentItemGUI extends Application {
             HBox buttonsEdit = new HBox(chooseButton, backHome);
             buttonsEdit.setSpacing(15);
 
+            // Create list
             Insets buttonsEditPadding = new Insets(0, 15, 0, 15);
             buttonsEdit.setPadding(buttonsEditPadding);
             ArrayList contentItems = contentItemController.getAllContentItems();
@@ -290,6 +310,7 @@ public class contentItemGUI extends Application {
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
             BorderPane.setMargin(list, new Insets(25));
 
+            // Create mainScene
             Scene updateScene = new Scene(editPane, 800, 600);
             updateScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(updateScene);
@@ -298,7 +319,9 @@ public class contentItemGUI extends Application {
             DatePicker updateDate = new DatePicker();
             TextField updateStatus = new TextField();
 
+            // Handle edit button action
             chooseButton.setOnAction(f -> {
+                // Create layout for the homepage
                 BorderPane editWindow = new BorderPane();
                 Label editWindowTitle = new Label("Edit window");
                 editWindowTitle.setStyle("-fx-font-size: 30;");
@@ -328,12 +351,15 @@ public class contentItemGUI extends Application {
                 BorderPane.setMargin(editButtons, new Insets(0, 0, 25, 0));
                 BorderPane.setMargin(updateFields, new Insets(25));
 
+                // Create mainScene
                 Scene confirmEdit = new Scene(editWindow, 800, 600);
                 confirmEdit.getRoot().setStyle("-fx-background-color: #f5f5dc;");
                 stage.setScene(confirmEdit);
                 stage.show();
 
+                // Handle confirm button action
                 confirmButton.setOnAction(g -> {
+                    // Update content
                     selectedContent.setContentItemID(Integer.parseInt(updateContentID.getText()));
                     selectedContent.setPublicationDate(updateDate.getValue());
                     selectedContent.setStatus(updateStatus.getText());
@@ -355,10 +381,12 @@ public class contentItemGUI extends Application {
         return homeScene;
     }
 
+    // Constructor
     public contentItemGUI(contentItemController contentItemController) {
         this.contentItemController = contentItemController;
     }
 
+    // Main method
     @Override
     public void start(Stage arg0) throws Exception {
 

@@ -10,10 +10,12 @@ public class ContentItem {
     private LocalDate publicationDate;
     private String status;
 
+    // Constructor
     public ContentItem() {
         this.contentItemID = contentItemID;
     }
 
+    // Getters and Setters
     public int getContentItemID() {
         return contentItemID;
     }

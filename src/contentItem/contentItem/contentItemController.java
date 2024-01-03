@@ -13,10 +13,12 @@ public class contentItemController {
     private DatabaseManager databaseManager;
     private Connection connection;
 
+    // Constructor
     public contentItemController() {
         this.databaseManager = new DatabaseManager();
     }
 
+    // This function executes a SQL query
     public ResultSet query(String sqlQuery) {
         try {
             connection = databaseManager.getConnection();
@@ -28,6 +30,7 @@ public class contentItemController {
         return null;
     }
 
+    // This function returns all content item IDs
     public ArrayList<Integer> getAllContentItems() {
         ArrayList<Integer> contentItems = new ArrayList<>();
 
@@ -45,6 +48,7 @@ public class contentItemController {
         return contentItems;
     }
 
+    // This function adds a new content item
     public void addContentItem(ContentItem contentItem) {
         try {
             connection = databaseManager.getConnection();
@@ -61,6 +65,7 @@ public class contentItemController {
         }
     }
 
+    // This function deletes a content item
     public void deleteContentItem(int contentItemID) {
         try {
             String query = "DELETE FROM ContentItem WHERE ContentItemID = ?";
@@ -73,6 +78,7 @@ public class contentItemController {
         }
     }
 
+    // This function returns a content item
     public ContentItem getContentItemByID(int contentItemID) {
         try {
             String query = "SELECT * FROM ContentItem WHERE ContentItemID = ?";
@@ -95,6 +101,7 @@ public class contentItemController {
         return null;
     }
 
+    // This function updates a content item
     public void updateContentItemFields(ContentItem contentItem) {
         String query = "UPDATE ContentItem SET ContentItemID = ?, PublicationDate = ?, Status = ? WHERE ContentItemID = ?";
         try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
