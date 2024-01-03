@@ -132,13 +132,22 @@ public class GUI extends Application {
                 codeCademyPane.setCenter(buttonBox);
                 buttonBox.setAlignment(Pos.CENTER);
 
+                Label label = new Label(
+                                "Yessin Boukrach || 2206857  \nYasir Kelloulou || 0000000 \nAmin Ahmidout || 0000000");
+                HBox labelBox = new HBox(label);
+                codeCademyPane.setBottom(labelBox);
+                labelBox.setAlignment(Pos.CENTER);
+
+                label.setStyle("-fx-font-size: 20; -fx-padding: 10; -fx-text-fill: #333;");
+                label.setOpacity(0.3);
+
                 BorderPane.setAlignment(codeCademyTitle, Pos.CENTER);
                 BorderPane.setMargin(codeCademyTitle, new Insets(10));
 
                 // Create the homepage scene
                 codeCademyHomeScene = new Scene(codeCademyPane, 800, 600);
                 stage.setScene(codeCademyHomeScene);
-                stage.setTitle("CodeCademy");
+                stage.setTitle("Yassine Boukrach || 2206857 - Yasir Kelloulou || 0000000 - Amin Ahmidout || 0000000");
                 stage.show();
 
                 // Cursist Manager Scene
