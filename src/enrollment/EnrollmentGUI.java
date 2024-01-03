@@ -165,6 +165,10 @@ public class EnrollmentGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all watchedContent
             ArrayList<String> enrollments = enrollmentController.getAllEnrollments();
+            Button infoButton = new Button("More Info");
+            infoButton.setPadding(buttonsMenuPadding);
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+
             items.setAll(enrollments);
             list.setItems(items);
             list.setStyle("-fx-font-size: 24; -fx-alignment: center;");
@@ -180,7 +184,7 @@ public class EnrollmentGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -194,6 +198,28 @@ public class EnrollmentGUI extends Application {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            infoButton.setOnAction(h -> {
+                String selectedEnrollment = list.getSelectionModel().getSelectedItem();
+                Enrollment enrollment = enrollmentController.getEnrollmentByName(selectedEnrollment);
+
+                if (!selectedEnrollment.isEmpty()) {
+
+                    String enrollmentDate = String.valueOf(enrollment.getEnrollmentDate());
+                    String courseName = enrollment.getCourseName();
+                    String cursistEmail = enrollment.getCursistEmailAddress();
+
+                    String info = "Enrollment Date: " + enrollmentDate + "\nCourse Name: " + courseName
+                            + "\nCursist Email: " + cursistEmail;
+
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Enrollment Info");
+                    alert.setHeaderText(null);
+                    alert.setContentText(info);
+                    alert.showAndWait();
+
+                }
+            });
 
         });
 

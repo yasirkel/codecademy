@@ -43,8 +43,8 @@ public class WatchedContentGUI extends Application {
         });
 
         // Create a welcome message for the homepage
-        Button createButton = new Button("Add %");
-        Button readButton = new Button("View all %");
+        Button createButton = new Button("Add % watched");
+        Button readButton = new Button("View all % watched");
         Label welcomeLabel = new Label("Welcome to Watched Content management");
 
         Insets welcomeLabelPadding = new Insets(25);

@@ -35,7 +35,7 @@ public class contentItemController {
             ResultSet rs = query("SELECT * FROM ContentItem");
 
             while (rs.next()) {
-                Integer contentItemId = rs.getInt("ContentItemID");
+                int contentItemId = rs.getInt("ContentItemID");
                 contentItems.add(contentItemId);
             }
         } catch (SQLException e) {

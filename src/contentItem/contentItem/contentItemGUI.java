@@ -159,6 +159,9 @@ public class contentItemGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all contentItems
             ArrayList contentItems = contentItemController.getAllContentItems();
+            Button infoButton = new Button("More Info");
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
+            infoButton.setPadding(buttonsMenuPadding);
 
             items.setAll(contentItems);
             list.setItems(items);
@@ -175,7 +178,7 @@ public class contentItemGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -189,6 +192,26 @@ public class contentItemGUI extends Application {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            // Handle info button action
+            infoButton.setOnAction(h -> {
+                String selectedContent = String.valueOf(list.getSelectionModel().getSelectedItem());
+                ContentItem selectedContentItem = contentItemController
+                        .getContentItemByID(Integer.valueOf(selectedContent));
+
+                String contentID = String.valueOf(selectedContentItem.getContentItemID());
+                String publicationDate = String.valueOf(selectedContentItem.getPublicationDate());
+                String status = String.valueOf(selectedContentItem.getStatus());
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Content Item");
+                alert.setHeaderText(null);
+                alert.setContentText(
+                        "Content ID: " + contentID + "\nPublication Date: " + publicationDate + "\nStatus: " + status);
+
+                alert.showAndWait();
+
+            });
 
         });
 

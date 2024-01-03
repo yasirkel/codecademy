@@ -97,4 +97,27 @@ public class EnrollmentController {
         }
         return null;
     }
+
+    public Enrollment getEnrollmentByName(String name) {
+        try {
+            String query = "SELECT * FROM Enrollment WHERE CourseName = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, name);
+                ResultSet rs = statement.executeQuery();
+
+                if (rs.next()) {
+                    Enrollment enrollment = new Enrollment();
+                    enrollment.setCourseName(rs.getString("CourseName"));
+                    enrollment.setCursistEmailAddress(rs.getString("CursistEmailAddress"));
+                    enrollment.setEnrollmentDate(rs.getObject("EnrollmentDate", LocalDate.class));
+
+                    return enrollment;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

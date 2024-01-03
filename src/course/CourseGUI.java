@@ -187,6 +187,9 @@ public class CourseGUI extends Application {
         readButton.setOnAction(g -> {
             // arraylist with all course names
             ArrayList<String> courseNames = courseController.getAllCourses();
+            Button infoButton = new Button("More Info");
+            infoButton.setPadding(buttonsMenuPadding);
+            infoButton.setStyle("-fx-background-color: #d2b48c;");
 
             items.setAll(courseNames);
             list.setItems(items);
@@ -203,7 +206,7 @@ public class CourseGUI extends Application {
             BorderPane.setAlignment(cursistPageTitle, Pos.CENTER);
             cursistPage.setTop(cursistPageTitle);
 
-            HBox cursistPageButtons = new HBox(deleteButton, backHome);
+            HBox cursistPageButtons = new HBox(deleteButton, backHome, infoButton);
             cursistPageButtons.setSpacing(10);
             Insets cursistPageButtonsPadding = new Insets(0, 15, 0, 15);
             cursistPageButtons.setPadding(cursistPageButtonsPadding);
@@ -217,6 +220,24 @@ public class CourseGUI extends Application {
             mainScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
             stage.setScene(mainScene);
             stage.show();
+
+            infoButton.setOnAction(h -> {
+                String selectedCourse = list.getSelectionModel().getSelectedItem();
+                Course course = courseController.getCourseByName(selectedCourse);
+                if (selectedCourse != null) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Course Details");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Course Name: " + course.getName() + "\n"
+                            + "Subject: " + course.getSubject() + "\n"
+                            + "Introduction Text: " + course.getIntroductionText() + "\n"
+                            + "Difficulty Level: " + course.getDifficultyLevel() + "\n"
+                            + "Course ID: " + course.getCourseId() + "\n"
+                            + "Module ID: " + course.getModuleId());
+                    alert.showAndWait();
+                }
+
+            });
 
         });
 
