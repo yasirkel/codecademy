@@ -17,6 +17,7 @@
       "request": "launch",
       "mainClass": "cursist.CursistGUI",
       "projectName": "codecademy_a4514a6b"
+      // "projectName": "codecademy_db527fad"
     },
     {
       "type": "java",
