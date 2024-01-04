@@ -4,6 +4,7 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+<<<<<<< HEAD
     // {
     //   "type": "java",
     //   "name": "CodeCademy",
@@ -11,6 +12,23 @@
     //   "mainClass": "main.CodeCademy",
     //   "projectName": "codecademy_db527fad"
     // },
+=======
+    {
+      "type": "java",
+      "name": "CodeCademy",
+      "request": "launch",
+      "mainClass": "main.CodeCademy",
+      "projectName": "codecademy_a4514a6b"
+    },
+    {
+      "type": "java",
+      "name": "CursistGUI",
+      "request": "launch",
+      "mainClass": "cursist.CursistGUI",
+      "projectName": "codecademy_a4514a6b"
+      // "projectName": "codecademy_db527fad"
+    },
+>>>>>>> 9de06c0a0ea39fa9bd0b7dfed23a86625290c32f
     {
       "type": "java",
       "name": "CodeCademy",
