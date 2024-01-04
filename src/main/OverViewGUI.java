@@ -180,22 +180,27 @@ public class OverViewGUI extends Application {
             topWebcasts = topWebcasts.substring(1, topWebcasts.length() - 1);
             String[] webcastTitles = topWebcasts.split(", ", 3);
 
-            firstTitleWebcast = webcastTitles[0];
-            secondTitleWebcast = webcastTitles[1];
-            thirdTitleWebcast = webcastTitles[2];
+            String topWebcastPercentages = getTopThreeWatchedWebcastsPercentage();
+            topWebcastPercentages = topWebcastPercentages.substring(1, topWebcastPercentages.length() - 1);
+            String[] webcastPercentage = topWebcastPercentages.split(", ", 3);
 
-            Label webcastFirstTitleLabel = new Label("1. " + webcastTitles[0].toString());
+            Label webcastFirstTitleLabel = new Label(
+                    "1. " + webcastTitles[0].toString() + " (" + webcastPercentage[0].toString() + "% watched)");
             webcastFirstTitleLabel.setStyle("-fx-font-size: 18;");
 
-            Label webcastSecondTitleLabel = new Label("2. " + webcastTitles[1].toString());
+            Label webcastSecondTitleLabel = new Label(
+                    "2. " + webcastTitles[1].toString() + " (" + webcastPercentage[1].toString() + "% watched)");
             webcastSecondTitleLabel.setStyle("-fx-font-size: 18;");
 
-            Label webcastThirdTitleLabel = new Label("3. " + webcastTitles[2].toString());
+            Label webcastThirdTitleLabel = new Label(
+                    "3. " + webcastTitles[2].toString() + " (" + webcastPercentage[2] + "% watched)");
             webcastThirdTitleLabel.setStyle("-fx-font-size: 18;");
 
             VBox webcastItem = new VBox(webcastFirstTitleLabel, webcastSecondTitleLabel, webcastThirdTitleLabel);
             webcastItem.setSpacing(15);
             webcastItem.setAlignment(Pos.CENTER);
+
+            backToHomeButton.setPrefSize(150, 50);
 
             VBox layout = new VBox(10, titleWebcastOverview, webcastItem, backToHomeButton);
             layout.setAlignment(Pos.CENTER);
@@ -239,6 +244,33 @@ public class OverViewGUI extends Application {
                 int percentageWatched = rs.getInt("PercentageWatched");
 
                 topThreeWatchedWebcasts.add(title);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topThreeWatchedWebcasts.toString();
+    }
+
+    public String getTopThreeWatchedWebcastsPercentage() {
+        // Make arraylist that holds top three watched webcasts in strings from the
+        // title
+        ArrayList<Integer> topThreeWatchedWebcasts = new ArrayList<>();
+
+        String sqlQuery = "SELECT TOP 3 TitleWebcast, CursistID, PercentageWatched FROM Webcast "
+                + "JOIN WatchedContent ON WatchedContent.ContentItemID = Webcast.ContentItemID " +
+                "ORDER BY PercentageWatched DESC";
+        try {
+            Connection connection = db.getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlQuery);
+
+            while (rs.next()) {
+                String title = rs.getString("TitleWebcast");
+                int cursistId = rs.getInt("CursistID");
+                int percentageWatched = rs.getInt("PercentageWatched");
+
+                topThreeWatchedWebcasts.add(percentageWatched);
             }
         } catch (SQLException e) {
             e.printStackTrace();
