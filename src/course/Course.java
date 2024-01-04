@@ -6,6 +6,8 @@ public class Course {
     private String introductionText;
     private int difficultyLevel;
     private int courseId;
+    // TODO courses moeten meerdere modules bevatten vgm, courseID toevoegen aan db
+    // van Modules.
     private int moduleId;
 
     public String getName() {
