@@ -1,5 +1,6 @@
 package main;
 
+import main.OverViewGUI;
 import course.*;
 import cursist.*;
 import contentItem.*;
@@ -55,6 +56,8 @@ public class GUI extends Application {
                 Button moduleManagementButton = new Button("Module manager");
                 Button enrollmentManagementButton = new Button("Enrollment manager");
                 Button certificateManagementButton = new Button("Certificate manager");
+                Button overViewButton = new Button("Overview options");
+
                 certificateManagementButton.setDisable(true);
 
                 cursistManagementButton.setOnMouseEntered(event -> cursistManagementButton.setCursor(Cursor.HAND));
@@ -82,6 +85,9 @@ public class GUI extends Application {
                 certificateManagementButton
                                 .setOnMouseExited(event -> certificateManagementButton.setCursor(Cursor.DEFAULT));
 
+                overViewButton.setOnMouseEntered(event -> overViewButton.setCursor(Cursor.HAND));
+                overViewButton.setOnMouseExited(event -> overViewButton.setCursor(Cursor.DEFAULT));
+
                 cursistManagementButton.setPrefSize(150, 50);
                 cursistManagementButton.setStyle(
                                 "-fx-font-size: 10;  -fx-background-radius: 5;");
@@ -107,9 +113,13 @@ public class GUI extends Application {
                 certificateManagementButton.setStyle(
                                 "-fx-font-size: 10; -fx-background-radius: 5;");
 
+                overViewButton.setPrefSize(150, 50);
+                overViewButton.setStyle(
+                                "-fx-font-size: 10; -fx-background-radius: 5;");
+
                 // All buttons in box
                 VBox leftButtonBox = new VBox(cursistManagementButton, courseManagementButton, webcastManagementButton,
-                                contentItemManagementButton);
+                                contentItemManagementButton, overViewButton);
                 VBox rightButtonBox = new VBox(watchedContentManagementButton, moduleManagementButton,
                                 enrollmentManagementButton, certificateManagementButton);
                 HBox buttonBox = new HBox(leftButtonBox, rightButtonBox);
@@ -133,7 +143,7 @@ public class GUI extends Application {
                 buttonBox.setAlignment(Pos.CENTER);
 
                 Label label = new Label(
-                                "Yessin Boukrach || 2206857  \nYasir Kelloulou || 0000000 \nAmin Ahmidout || 0000000");
+                                "Yessin Boukrach || 2206857  \nYasir Kelloulou || 0000000 \nAmin Ahmidout || 2224569");
                 HBox labelBox = new HBox(label);
                 codeCademyPane.setBottom(labelBox);
                 labelBox.setAlignment(Pos.CENTER);
@@ -199,6 +209,13 @@ public class GUI extends Application {
                         stage.show();
                 });
 
+                // Overview Scene
+                overViewButton.setOnAction(e -> {
+                        OverViewGUI overviewGUI = new OverViewGUI();
+                        stage.setScene(overviewGUI.OverViewScene(stage));
+                        stage.show();
+                });
+
                 String buttonStyle = "-fx-background-color: #d2b48c;";
                 cursistManagementButton.setStyle(buttonStyle);
                 courseManagementButton.setStyle(buttonStyle);
@@ -208,6 +225,7 @@ public class GUI extends Application {
                 moduleManagementButton.setStyle(buttonStyle);
                 enrollmentManagementButton.setStyle(buttonStyle);
                 certificateManagementButton.setStyle(buttonStyle);
+                overViewButton.setStyle(buttonStyle);
 
                 codeCademyHomeScene.getRoot().setStyle("-fx-background-color: #f5f5dc;");
 
