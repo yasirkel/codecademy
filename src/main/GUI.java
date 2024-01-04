@@ -133,7 +133,7 @@ public class GUI extends Application {
                 buttonBox.setAlignment(Pos.CENTER);
 
                 Label label = new Label(
-                                "Yessin Boukrach || 2206857  \nYasir Kelloulou || 0000000 \nAmin Ahmidout || 0000000");
+                                "Yessin Boukrach || 2206857  \nYasir Kelloulou || 0000000 \nAmin Ahmidout || 2224569");
                 HBox labelBox = new HBox(label);
                 codeCademyPane.setBottom(labelBox);
                 labelBox.setAlignment(Pos.CENTER);
