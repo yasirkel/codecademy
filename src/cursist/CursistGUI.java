@@ -1,6 +1,7 @@
 package cursist;
 
 import DatabaseManager.*;
+import validation.Validation;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,7 @@ public class CursistGUI extends Application {
     private Button backHome;
     private Button backToCodeCademy;
     private BorderPane homePane;
+    private Validation validator;
 
     // Constructor
     public CursistGUI(CursistController cursistController) {
@@ -121,6 +123,7 @@ public class CursistGUI extends Application {
                 String email = createEmailField.getText();
                 String birthDateText = createBirthDateField.getText();
 
+                // check if email is entered
                 if (email.isEmpty()) {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
@@ -130,15 +133,29 @@ public class CursistGUI extends Application {
                     return;
                 }
 
+                if (!validator.validateMailAddress(email)) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Email format is incorrect");
+                    alert.showAndWait();
+                    return;
+                }
+
+                // create format for birthdate and parse
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate birthDate = LocalDate.parse(birthDateText, formatter);
 
-                String gender = genderChoiceBox.getValue(); // Get the selected gender
+                // get values from form
+                String gender = genderChoiceBox.getValue(); 
                 String address = createAddressField.getText();
                 String city = createCityField.getText();
                 String country = createCountryField.getText();
 
+                
                 Cursist nieuweCursist = new Cursist();
+
+                // set values
                 nieuweCursist.setName(naam);
                 nieuweCursist.setEmailAddress(email);
                 nieuweCursist.setBirthDate(birthDate);
@@ -147,6 +164,7 @@ public class CursistGUI extends Application {
                 nieuweCursist.setCity(city);
                 nieuweCursist.setCountry(country);
 
+                // save cursist to database
                 cursistController.saveCursist(nieuweCursist);
 
                 // Add alert pop-up that cursist has been added

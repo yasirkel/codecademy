@@ -15,7 +15,7 @@ public class CursistController {
 
     public CursistController() {
         this.databaseManager = new DatabaseManager();
-
+        this.connection = databaseManager.getConnection();
     }
 
     public ResultSet query(String sqlQuery) {
